@@ -291,18 +291,17 @@ export default {
       color: transparent;
       height: auto;
       position: absolute;
-      top: 15%;
-      left: 1%;
+      top: 120px;
+      left: 0;
       -webkit-user-select: none;
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
       width: 0rem;
-      z-index: 0;
+      z-index: 1;
     }
     .menu.active {
-      width: -webkit-calc(100% - 0.5em);
-      width: calc(100% - 0.5em);
+      width: 100%;
     }
     .menu.active .menu-link {
       color: white;
