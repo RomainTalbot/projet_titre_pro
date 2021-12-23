@@ -2,11 +2,11 @@
     <nav class="nav-footer">
        <router-link
           :to="{
-            name: 'home',
+            name: 'contact',
           }"
           class="nav-footer-link"
         >
-          Accueil
+          Contact
         </router-link>
 
         <router-link
@@ -15,7 +15,7 @@
           }"
           class="nav-footer-link"
         >
-          Trouve ton Skatepark
+          Newsletter
         </router-link>
 
         <router-link
@@ -24,7 +24,7 @@
           }"
           class="nav-footer-link"
         >
-          Trouve ton Matos
+          Spinning Squad
         </router-link>
     </nav>
 </template>

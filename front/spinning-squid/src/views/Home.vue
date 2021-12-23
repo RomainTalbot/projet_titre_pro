@@ -25,7 +25,7 @@
 
       <router-link
         :to="{
-          name: 'home',
+          name: 'skateparkList',
         }"
         class="home-nav"
       >
@@ -42,7 +42,7 @@
       </router-link>
       <router-link
         :to="{
-          name: 'home',
+          name: 'productList',
         }"
         class="home-nav"
       >
@@ -60,7 +60,7 @@
       </router-link>
       <router-link
         :to="{
-          name: 'home',
+          name: 'newsList',
         }"
         class="home-nav"
       >

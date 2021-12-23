@@ -28,7 +28,7 @@
 
         <router-link
           :to="{
-            name: 'home',
+            name: 'skateparkList',
           }"
           exact
           class="nav-link"
@@ -38,7 +38,7 @@
 
         <router-link
           :to="{
-            name: 'home',
+            name: 'productList',
           }"
           exact
           class="nav-link"
@@ -48,7 +48,7 @@
 
         <router-link
           :to="{
-            name: 'home',
+            name: 'newsList',
           }"
           class="nav-link"
         >
@@ -57,7 +57,7 @@
 
         <router-link
           :to="{
-            name: 'home',
+            name: 'contact',
           }"
           class="nav-link"
         >
@@ -66,7 +66,7 @@
 
         <router-link
           :to="{
-            name: 'home',
+            name: 'subscribe',
           }"
           class="nav-link"
         >
@@ -94,7 +94,7 @@
 
             <router-link
               :to="{
-                name: 'home',
+                name: 'skateparkList',
               }"
               exact
               class="nav-link menu-link"
@@ -104,7 +104,7 @@
 
             <router-link
               :to="{
-                name: 'home',
+                name: 'productList',
               }"
               exact
               class="nav-link menu-link"
@@ -114,7 +114,7 @@
 
             <router-link
               :to="{
-                name: 'home',
+                name: 'newsList',
               }"
               class="nav-link menu-link"
             >
@@ -123,7 +123,7 @@
 
             <router-link
               :to="{
-                name: 'home',
+                name: 'contact',
               }"
               class="nav-link menu-link"
             >
@@ -132,7 +132,7 @@
 
             <router-link
               :to="{
-                name: 'home',
+                name: 'subscribe',
               }"
               class="nav-link menu-link"
             >
