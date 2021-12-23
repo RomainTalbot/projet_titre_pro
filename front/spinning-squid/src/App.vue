@@ -23,5 +23,15 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+
+body {
+  margin: 0;
+}
+#app {
+  background: radial-gradient(ellipse at top, #242424 0%, #000000 80%);
+  min-height: 100vh;
+  max-height: auto;
+  position: relative;
+}
 </style>

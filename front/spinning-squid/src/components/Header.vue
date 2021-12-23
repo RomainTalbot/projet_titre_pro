@@ -370,6 +370,15 @@ export default {
     }
   }
 }
+@media (min-width: $largeScreen) {
+  .nav {
+    justify-content: center;
+
+    .nav-desktop {
+      width: 1500px;
+    }
+  }
+}
 @media (max-width: 1100px) {
   .nav {
     .nav-desktop{

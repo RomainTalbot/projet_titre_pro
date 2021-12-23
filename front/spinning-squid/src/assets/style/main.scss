@@ -13,6 +13,8 @@ $largeScreen: 1500px;
 // Generic class
 .main-container {
   min-height: calc(100vh - 120px - 70px);
+  width: 99%;
+  margin: 0 auto;
 }
 .block {
   height: auto;
@@ -101,26 +103,23 @@ a {
 
 @media (min-width: $largeScreen) {
   .main-container {
-    width: 1500px;
+    max-width: 1500px;
     margin: 0 auto;
   }
 }
 
 @media (max-width: $smallScreen) {
   .title {
-    padding: 1em;
+    padding: 1em; 
     font-size: 1.5em;
+  }
+  .add-image {
+    width: 200px;
   }
 }
 @media (max-width: $mediumScreen) {
   .title {
     padding: 1em;
     font-size: 2.5em;
-  }
-}
-
-@media (max-width: $smallScreen) {
-  .add-image {
-    width: 200px;
   }
 }
