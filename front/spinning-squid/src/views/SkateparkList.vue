@@ -28,12 +28,39 @@
       <button class="button search-button" type="submit">Rechercher</button>
     </form>
 
-    <div class="search-result"></div>
+    <div class="search-result">
+      <ul>
+        <li v-for="skateparkItem in skateparks" :key="skateparkItem.id">
+          <SkateparkCard :skateparkProps="skateparkItem" />
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
-export default {};
+import SkateparkCard from "../components/SkateparkCard.vue";
+
+export default {
+  name: "SkateparkList",
+  components: {
+    SkateparkCard
+  },
+
+  async created() {
+
+    console.log("coucou");
+
+    this.skateparks = await this.$store.state.services.skatepark.loadSkateParks();
+
+  },
+
+  data() {
+    return {
+      skateparks: [],
+    }
+  },
+};
 </script>
 
 <style lang="scss">
@@ -107,50 +134,6 @@ export default {};
       width: 40%;
       height: auto;
       margin-right: 1em;
-
-      .search-list-item {
-        padding: 1em;
-        margin-bottom: 1em;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background-color: $white;
-
-        .search-list-image {
-          border: solid 1px;
-          height: 80px;
-          width: 80px;
-          margin-right: 1em;
-        }
-        .search-list-title {
-          white-space: pre-line;
-          word-break: break-all;
-        }
-        .block-titre-type {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-        }
-        .search-list-description {
-          font-size: 0.8em;
-          padding-left: 0.8rem;
-        }
-        .block-buttons {
-          display: flex;
-          flex-direction: column;
-          #special-button {
-            padding-bottom: 0.5rem;
-          }
-          .button {
-            width: 80px;
-          }
-        }
-        .search-list-button {
-          width: 60px;
-          height: 30px;
-        }
-      }
     }
   }
 }
