@@ -12,7 +12,7 @@
     </div>
   </div>
   <div class="block-buttons">
-    <button class="button" type="button">
+    <button class="button" type="button" v-on:click="moveLocationOnMap(skateparkProps.meta.latitude, skateparkProps.meta.longitude)">
         Centrer
     </button>
     <button class="button" type="button">
@@ -32,6 +32,7 @@
 </template>
 
 <script>
+
 export default {
   name: "SkateparkCard",
 
@@ -45,7 +46,10 @@ export default {
     skateparkProps: Object,
   },
   methods: {
+    moveLocationOnMap: function(latitude, longitude) {
 
+      this.$refs.SkateparkMap.moveLocationOnMap(latitude,longitude);
+    }
   },
   computed: {
     getImageURL() {

@@ -1,10 +1,9 @@
 <template>
-  <GmapMap :center="startLocation" :zoom="6" style="width: 100%; height: 100%">
+  <GmapMap :center="startLocation" :zoom="zoom" style="width: 100%; height: 100%">
     <GmapMarker
       v-for="skateparkItem in skateparks"
       :key="skateparkItem.id"
       :position="getPosition(skateparkItem)"
-      @click="center = skateparkItem"
     />
   </GmapMap>
 </template>
@@ -21,6 +20,7 @@ export default {
   data() {
     return {
       startLocation: { lat: 46, lng: 2 },
+      zoom: 6,
       skateparks: [],
     };
   },
@@ -32,6 +32,14 @@ export default {
         lng: parseFloat(marker.meta.longitude)
       }
     },
+
+    moveLocationOnMap: function(latitude, longitude) {
+      this.location = {
+        lat: latitude,
+        lng: longitude
+      },
+      this.zoom = 15
+    }
   }
 };
 </script>

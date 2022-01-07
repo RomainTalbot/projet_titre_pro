@@ -8,6 +8,7 @@ import ProductList from '../views/ProductList.vue'
 import NewsList from '../views/NewsList.vue'
 import Contact from '../views/Contact.vue'
 import Subscribe from '../views/Subscribe.vue'
+import UserHome from '../views/UserHome.vue'
 
 Vue.use(VueRouter)
 
@@ -52,6 +53,12 @@ const routes = [
     name: 'subscribe',
     component: Subscribe,
   },
+  {
+    path: '/profil',
+    name: 'userHome',
+    component: UserHome,
+  },
+
 ]
 
 const router = new VueRouter({

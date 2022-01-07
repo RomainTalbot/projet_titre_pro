@@ -3,15 +3,16 @@
       <h1 class="title">Connecte toi ou sinon, inscrit toi.</h1>
 
       <div class="container-forms">
-        <form class="form-register" onSubmit={props.handleSubmitRegister}>
+        <form class="form-register" @submit="handleSubmitSubscribe">
           <h2 class="form-title">
             Tu n'a pas de compte ? Crées-en un!
           </h2>
           <label>Nom d'utilisateur
             <input
-              id="usernameInscription"
+              id="username"
               type="text"
               class="form-input"
+              v-model="username"
               required
             />
           </label>
@@ -20,6 +21,7 @@
               id="lastname"
               type="text"
               class="form-input"
+              v-model="lastname"
               required
             />
           </label>
@@ -28,6 +30,7 @@
               id="firstname"
               type="text"
               class="form-input"
+              v-model="firstname"
               required
             />
           </label>
@@ -36,6 +39,7 @@
               id="street"
               type="text"
               class="form-input"
+              v-model="street"
               required
             />
           </label>
@@ -44,6 +48,7 @@
               id="postal"
               type="text"
               class="form-input"
+              v-model="zipcode"
               required
             />
           </label>
@@ -52,6 +57,7 @@
               id="city"
               type="text"
               class="form-input"
+              v-model="city"
               required
             />
           </label>
@@ -60,6 +66,7 @@
               id="email"
               type="email"
               class="form-input"
+              v-model="email"
               required
 
             />
@@ -69,6 +76,7 @@
               id="passwordInscription"
               type="password"
               class="form-input"
+              v-model="password"
               required
             />
           </label>
@@ -77,7 +85,7 @@
           </button>
         </form>
 
-        <form class="form-connection">
+        <form class="form-connection" @submit="handleSubmitLogin">
           <h2 class="form-title">
             Tu a déjà un compte ? Connecte toi!
           </h2>
@@ -86,6 +94,7 @@
               id="usernameConnexion"
               type="text"
               class="form-input"
+              v-model="username"
               required
             />
           </label>
@@ -94,6 +103,7 @@
               id="passwordConnexion"
               type="password"
               class="form-input"
+              v-model="password"
               required
             />
           </label>
@@ -108,6 +118,82 @@
 <script>
 export default {
   name:"Subscribe",
+
+  data() {
+    return {
+      username: "",
+      lastname: "",
+      firstname: "",
+      street: "",
+      zipcode: "",
+      city: "",
+      email: "",
+      password: "",
+      usernameEmpty: true,
+      emailEmpty: true,
+      paswordEmpty: true
+    }
+  },
+
+  methods: {
+    handleSubmitSubscribe: async function (event) {
+      event.preventDefault();
+
+      if (this.username != "") {
+        this.usernameEmpty = false;
+      }
+      if (this.email != "") {
+        this.emailEmpty = false;
+      }
+      if (this.password != "") {
+        this.passwordEmpty = false;
+      }
+
+      if (
+        this.username != "" &&
+        this.email != "" &&
+        this.password != ""
+      ) {
+        const result = this.$store.state.services.user.saveNewUser(
+          this.username,
+          this.lastname,
+          this.firstname,
+          this.street,
+          this.zipcode,
+          this.city,
+          this.email,
+          this.password,
+        );
+
+        console.log(result);
+        // if (result) {
+        //   this.$router.push("userHome");
+        // }
+      }
+    },
+
+    handleSubmitLogin: async function(event) {
+      event.preventDefault();
+
+      if (this.username != "") {
+        this.usernameEmpty = false;
+      }
+      if (this.password != "") {
+        this.passwordEmpty = false;
+      }
+
+      if (!this.usernameEmpty && !this.passwordEmpty) {
+        
+        let userData = await this.$store.state.services.user.login(this.username, this.password);
+        // console.log(userData);
+
+        if (userData.token) {
+          this.$store.state.services.token.set('userData', userData);
+        }
+      }
+      // this.$router.push('user-home');
+    }
+  }
 }
 </script>
 
