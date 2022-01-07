@@ -57,8 +57,6 @@ export default {
 
   async created() {
 
-    console.log("coucou");
-
     this.skateparks = await this.$store.state.services.skatepark.loadSkateParks();
 
   },
@@ -129,8 +127,11 @@ export default {
     }
 
     .search-map {
-      height: 60vw;
-      width: 60vw;
+      height: 45vw;
+      width: 50vw;
+      max-height: 850px;
+      max-width: 850px;
+      margin: 0 auto;
       border: solid 1px;
       border-color: $orange;
       box-shadow: 0 0 40px 40px $orange inset, 0 0 0 0 $orange;

@@ -404,8 +404,8 @@ class Plugin
         <input id="" style="width: 50px;" type="text" name="zipcode" value="<?php echo $zipcode; ?>" placeholder="zipcode"/>
         <input id="" type="text" name="street" value="<?php echo $street; ?>" placeholder="street"/>
         <input id="" type="text" name="city" value="<?php echo $city; ?>" placeholder="city"/>
-        <input id="" type="number" name="latitude" value="<?php echo $latitude; ?>" placeholder="latitude"/>
-        <input id="" type="number" name="longitude" value="<?php echo $longitude; ?>" placeholder="longitude"/>
+        <input id="" type="number" step="0.00001" name="latitude" value="<?php echo $latitude; ?>" placeholder="latitude"/>
+        <input id="" type="number" step="0.00001" name="longitude" value="<?php echo $longitude; ?>" placeholder="longitude"/>
       </div>
       <br>
       <div>
@@ -489,6 +489,13 @@ class Plugin
         }
         if(isset($_POST['city'])){
             update_post_meta($post_id, 'city', sanitize_text_field($_POST['city']));
+        }
+
+        if(isset($_POST['latitude'])){
+            update_post_meta($post_id, 'latitude', sanitize_text_field($_POST['latitude']));
+        }
+        if(isset($_POST['longitude'])){
+            update_post_meta($post_id, 'longitude', sanitize_text_field($_POST['longitude']));
         }
 
         if (isset($_POST['parking'])) {

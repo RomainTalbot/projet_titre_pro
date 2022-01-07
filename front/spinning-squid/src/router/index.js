@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import SkateparkList from '../views/SkateparkList.vue'
+import SkateparkDetails from '../views/SkateparkDetails.vue'
 import SkateparkAdd from '../views/SkateparkAdd.vue'
 import ProductList from '../views/ProductList.vue'
 import NewsList from '../views/NewsList.vue'
@@ -20,6 +21,11 @@ const routes = [
     path: '/trouve-ton-skatepark',
     name: 'skateparkList',
     component: SkateparkList,
+  },
+  {
+    path: '/trouve-ton-skatepark/:id',
+    name: 'skateparkDetails',
+    component: SkateparkDetails,
   },
   {
     path: '/trouve-ton-skatepark/ajoute-ton-spot',

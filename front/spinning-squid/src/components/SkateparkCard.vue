@@ -12,8 +12,21 @@
     </div>
   </div>
   <div class="block-buttons">
-    <button class="button" type="button">Centrer</button>
-    <button class="button" type="button">Détails</button>
+    <button class="button" type="button">
+        Centrer
+    </button>
+    <button class="button" type="button">
+      <router-link
+        :to="{
+          name: 'skateparkDetails',
+          params: {
+            id: skateparkProps.id
+          }
+        }"
+      >
+        Détails
+      </router-link>
+    </button>
   </div>
   </div>
 </template>
