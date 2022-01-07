@@ -1,16 +1,17 @@
 <template>
   <div class="main-container search">
     <h1 class="title">Trouve ton SkatePark</h1>
-    <router-link
+    <button class="button addSpot-button" type="button">
+      <router-link
       :to="{
         name: 'skateparkAdd',
       }"
       class="nav-link menu-link"
-    >
-       <button class="button addSpot-button" type="button">
-         Ajoute ton spot
-       </button>
-    </router-link>
+      >
+        Ajoute ton spot
+      </router-link>
+    </button>
+    
 
     <form class="search-form">
       <label class="search-label">
@@ -29,22 +30,29 @@
     </form>
 
     <div class="search-result">
-      <ul>
-        <li v-for="skateparkItem in skateparks" :key="skateparkItem.id">
-          <SkateparkCard :skateparkProps="skateparkItem" />
-        </li>
-      </ul>
+      <div class="search-list">
+        <ul >
+          <li v-for="skateparkItem in skateparks" :key="skateparkItem.id">
+            <SkateparkCard :skateparkProps="skateparkItem" />
+          </li>
+        </ul>
+      </div>
+      <div class="search-map">
+        <SkateparkMap/>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import SkateparkCard from "../components/SkateparkCard.vue";
+import SkateparkMap from "../components/SkateparkMap.vue";
 
 export default {
   name: "SkateparkList",
   components: {
-    SkateparkCard
+    SkateparkCard,
+    SkateparkMap
   },
 
   async created() {
@@ -109,12 +117,16 @@ export default {
 
   .search-result {
     display: flex;
-    width: 93vw;
     flex-direction: row;
-    align-items: flex-start;
-    justify-content: center;
+    justify-content: space-between;
     margin: 1em auto 2em;
     max-width: 1500px;
+
+    .search-list {
+      width: 40%;
+      height: auto;
+      margin-right: 1em;
+    }
 
     .search-map {
       height: 60vw;
@@ -123,44 +135,11 @@ export default {
       border-color: $orange;
       box-shadow: 0 0 40px 40px $orange inset, 0 0 0 0 $orange;
       transition: all 150ms ease-in-out;
-
-      &:hover {
-        box-shadow: 0 0 10px 0 $orange inset, 0 0 10px 4px $orange;
-      }
-    }
-
-    .search-list {
-      box-sizing: border-box;
-      width: 40%;
-      height: auto;
-      margin-right: 1em;
     }
   }
 }
 
-.search-list-item {
-  padding: 1em;
-  margin-bottom: 1em;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: $white;
-}
-
-@media (min-width: $largeScreen) {
-  .search {
-    .search-result {
-      .search-map {
-        width: 50vw;
-        height: 45vw;
-        margin: 0 auto;
-      }
-    }
-  }
-}
-
-@media (max-width: 800px) {
+@media (max-width: $mediumScreen + 400px) {
   .search {
     .search-result {
       flex-direction: column-reverse;
@@ -179,8 +158,19 @@ export default {
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: $smallScreen) {
   .search {
+    .addSpot-button {
+      justify-content: center;
+      margin: 0 auto;
+    }
+    .search-form {
+      flex-direction: column;
+
+      .search-input {
+        margin: 1em 0;
+      }
+    }
     .search-result {
       .search-list {
         .search-list-item {
