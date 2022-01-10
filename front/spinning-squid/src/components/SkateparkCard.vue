@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { bus } from '../main';
 
 export default {
   name: "SkateparkCard",
@@ -48,7 +49,7 @@ export default {
   methods: {
     moveLocationOnMap: function(latitude, longitude) {
 
-      this.$refs.SkateparkMap.moveLocationOnMap(latitude,longitude);
+      bus.$emit('refreshLocationMap', [latitude,longitude]);
     }
   },
   computed: {

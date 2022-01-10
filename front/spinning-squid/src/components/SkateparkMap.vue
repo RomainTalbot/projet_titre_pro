@@ -1,5 +1,5 @@
 <template>
-  <GmapMap :center="startLocation" :zoom="zoom" style="width: 100%; height: 100%">
+  <GmapMap :center="location" :zoom="zoom" style="width: 100%; height: 100%">
     <GmapMarker
       v-for="skateparkItem in skateparks"
       :key="skateparkItem.id"
@@ -9,17 +9,27 @@
 </template>
 
 <script>
+import { bus } from '../main';
+
 export default {
   name: "SkateparkMap",
 
   async created() {
 
     this.skateparks = await this.$store.state.services.skatepark.loadSkateParks();
+
+    bus.$on('refreshLocationMap', (data) => {
+      this.location = {
+        lat: data[0],
+        lng: data[1]
+      },
+      this.zoom = 15
+    })
   },
 
   data() {
     return {
-      startLocation: { lat: 46, lng: 2 },
+      location: { lat: 46, lng: 2 },
       zoom: 6,
       skateparks: [],
     };
@@ -33,13 +43,13 @@ export default {
       }
     },
 
-    moveLocationOnMap: function(latitude, longitude) {
-      this.location = {
-        lat: latitude,
-        lng: longitude
-      },
-      this.zoom = 15
-    }
+    // moveLocationOnMap: function(latitude, longitude) {
+    //   this.location = {
+    //     lat: latitude,
+    //     lng: longitude
+    //   },
+    //   this.zoom = 15
+    // }
   }
 };
 </script>
