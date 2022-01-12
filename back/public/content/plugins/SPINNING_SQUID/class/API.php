@@ -433,7 +433,8 @@ class API
         return [
             'succes' => false,
             'informations' => 'user is not connected',
-            'user' => $user->ID
+            'user' => $user->ID,
+            'debug' =>  $title
         ];
     }
 
@@ -565,7 +566,7 @@ class API
         return [
             'succes' => false,
             'informations' => 'user is not connected',
-            'user' => $user->ID
+            'user' => $user->ID,
         ];
     }
 

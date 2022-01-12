@@ -1,0 +1,331 @@
+<template>
+<div class="profile">
+    <h1 class="title profile-title" v-for="data in userData" :key="data.name">Bienvenue sur ton compte {{data.name}}</h1>
+
+    <div class="profile-container">
+      <img class="profile-avatar" src="" alt="avatar"/>
+      <p class="profile-name"></p>
+
+      <div class="profile-button-dock">
+        <button class="button" type="button">Editer mon profil</button>
+        <button class="button" type="button">Supprimer compte</button>
+      </div>
+    </div>
+
+    <div class="profile-contribution">
+      <h2 class="profile-contribution-title">Mes contributions</h2>
+
+      <h2 class="profile-add-title">Spot(s) ajouté(s)</h2>
+      <div class="profile-contribution-articles">
+        <div class="profile-articles-title" v-if="userDataSkatepark == 0">Aucun skatepark</div>
+        <div v-else v-for="dataSkatepark in userDataSkatepark" :key="dataSkatepark.id">
+          <h3 class="profile-articles-title">{{dataSkatepark.title.rendered}}</h3>
+            <div class="profile-articles-button-dock">  
+              <button
+                class="button"
+                type="button"
+              >
+                <router-link
+                  :to="{
+                    name: 'skateparkDetails',
+                    params: {
+                      id: dataSkatepark.id
+                    }
+                  }"
+                >
+                  Consulter
+                </router-link>
+              </button>
+          
+              <button
+                class="button"
+                type="button"
+                to=""
+              >
+                <router-link
+                    :to="{
+                      name: 'skateparkEdit',
+                      params: {
+                        id: dataSkatepark.id
+                      }
+                    }"
+                  >
+                  Modifier
+                </router-link>
+              </button>
+            </div>
+        </div>
+      </div>
+
+      <h2 class="profile-add-title">Annonce(s) de matos</h2>
+      <div class="profile-contribution-articles">
+      </div>
+
+      <h2 class="profile-add-title">Évènement ajouté(s)</h2>
+      <div class="profile-contribution-articles">
+      </div>
+    </div>
+</div>
+</template>
+
+<script>
+
+export default {
+  name: "UserHome",
+
+  async created() {
+
+    this.userData = await this.$store.state.services.user.loadUserDataByUsername();
+
+    this.userDataSkatepark = await this.$store.state.services.user.loadUserSkateparks(this.userData[0].id);
+
+    console.log(this.userDataSkatepark);
+  },
+
+  data() {
+    return {
+      userData: [],
+      userDataSkatepark: [],
+    }
+  },
+};
+</script>
+
+<style lang="scss">
+@import "../assets/style/main.scss";
+
+.profile {
+  color: $white;
+  font-family: "Righteous";
+
+  .profile-title {
+    margin-bottom: 1em;
+  }
+
+  .profile-container {
+    width: 600px;
+    height: auto;
+    margin: 0 auto 2em;
+    border: solid 1px $white;
+    padding: 1em 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    .profile-avatar {
+      width: 70px;
+      height: auto;
+      background-color: $white;
+      border-radius: 50%;
+      padding: 0.2em;
+    }
+
+    .profile-name {
+    }
+
+    .profile-button-dock {
+      display: flex;
+
+      button {
+        margin-left: 0.5em;
+      }
+    }
+  }
+
+  .profile-contribution {
+    max-width: 800px;
+    height: auto;
+    margin: auto;
+
+    .profile-contribution-title {
+      text-align: center;
+      font-size: 2.8em;
+      margin: 1em;
+      font-family: "Sedgwick Ave Display";
+    }
+
+    .profile-add-title {
+      text-align: center;
+      margin: 1.5em;
+      font-size: 1.5em;
+    }
+
+    .profile-contribution-articles {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      border: solid 1px;
+      padding: 1em;
+
+      .profile-articles-title {
+        width: 25vh;
+        padding: 0.5em;
+        margin: auto;
+      }
+
+      .profile-articles-button-dock {
+        display: flex;
+        margin: auto;
+
+        button {
+          margin: 0 0.5em 0.5em;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: $smallScreen) {
+  .profile {
+    .profile-title {
+      margin-bottom: 0.5em;
+    }
+    .profile-container {
+      max-width: 300px;
+      margin: 0 auto 2em;
+      padding: 1em 0;
+
+      .profile-avatar {
+        width: 35px;
+      }
+      .profile-name {
+      }
+      .profile-button-dock {
+        display: flex;
+        flex-direction: column;
+
+        button {
+          margin-bottom: 0.5em;
+        }
+      }
+    }
+    .profile-contribution {
+      .profile-contribution-title {
+        text-align: center;
+        font-size: 1.5em;
+        margin: 0.5em;
+      }
+      .profile-add-title {
+        margin: 1em;
+        font-size: 1em;
+      }
+      .profile-contribution-articles {
+        
+        display: flex;
+        align-items: center;
+        border: solid 1px;
+        padding: 0.5em;
+        margin: 0.5em;
+
+        .profile-articles-title {
+          width: 50%;
+          text-align: center;
+          white-space: pre-line;
+          word-break: break-all;
+        }
+
+        .profile-articles-button-dock {
+          display: flex;
+
+          button {
+          }
+        }
+      }
+    }
+  }
+}
+@media (max-width: $mediumScreen) {
+  .profile {
+    .profile-title {
+      margin-bottom: 0.5em;
+    }
+    .profile-container {
+      width: 400px;
+      margin: 0 auto 2em;
+      padding: 1em 0;
+
+      .profile-avatar {
+        width: 35px;
+      }
+      .profile-name {
+      }
+      .profile-button-dock {
+        display: flex;
+        flex-direction: column;
+
+        button {
+          margin-bottom: 0.5em;
+        }
+      }
+    }
+
+    .profile-contribution {
+      .profile-contribution-title {
+        font-size: 2em;
+      }
+
+      .profile-add-title {
+        font-size: 1.2em;
+      }
+
+      .profile-contribution-articles {
+        .profile-articles-title {
+          padding: 0.5em;
+          text-align: center;
+          white-space: pre-line;
+          word-break: break-all;
+        }
+
+        .profile-articles-button-dock {
+          button {
+          }
+        }
+      }
+    }
+  }
+}
+
+.modal {
+  background-color: #ffffff;
+  width: 800px;
+  height: 450px;
+
+  .header {
+    width: 100%;
+    border-bottom: 1px solid gray;
+    font-size: 1.5em;
+    text-align: center;
+    padding: 5px;
+  }
+
+  .form {
+    padding: 2em;
+
+    .content {
+      width: 600px;
+      height: 300px;
+      margin: auto;
+
+      .form-edit-label {
+        float: left;
+        padding: 0.3em;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      .form-edit-input {
+        margin-left: 1em;
+        float: right;
+        width: 400px;
+      }
+    }
+    .actions {
+      padding: 10px 5px;
+      display: flex;
+      justify-content: space-evenly;
+      margin: 1em;
+    }
+  }
+}
+
+</style>

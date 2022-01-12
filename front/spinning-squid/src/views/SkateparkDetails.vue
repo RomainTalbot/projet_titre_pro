@@ -67,7 +67,7 @@ export default {
     // les composant on acces a une "armoire" this.$router, cette dernière contient un tiroir "params" dans lequel je vais trouver la partie dynamique de mon URL
     this.skateparkID = this.$route.params.id;
 
-     this.skatepark = await this.$store.state.services.skatepark.loadSkateParkById(this.skateparkID);
+    this.skatepark = await this.$store.state.services.skatepark.loadSkateParkById(this.skateparkID);
   },
 
   methods: {
@@ -187,8 +187,6 @@ export default {
     }
   }
 }
-.skateparkDetails-searchresultadress {
-}
 
 .skateparkDetails-detailssearchresult {
   padding-bottom: 1rem;
@@ -239,8 +237,7 @@ export default {
 }
 
 @media (min-width: $largeScreen) {
-  .skateparkDetails-description {
-  }
+
 }
 
 @media (max-width: $mediumScreen) {

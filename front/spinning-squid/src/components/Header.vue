@@ -65,12 +65,22 @@
         </router-link>
 
         <router-link
+          v-if="!user"
           :to="{
             name: 'subscribe',
           }"
           class="nav-link"
         >
           Connexion
+        </router-link>
+        <router-link
+          v-if="user"
+          :to="{
+            name: 'subscribe',
+          }"
+          class="nav-link"
+        >
+          Espace Utilisateur
         </router-link>
       </div>
 
@@ -131,12 +141,22 @@
             </router-link>
 
             <router-link
+              v-if="!user"
               :to="{
                 name: 'subscribe',
               }"
               class="nav-link menu-link"
             >
               Connexion
+            </router-link>
+            <router-link
+              v-if="user"
+              :to="{
+                name: 'subscribe',
+              }"
+              class="nav-link menu-link"
+            >
+              Espace Utilisateur
             </router-link>
           </div>
         </nav>
@@ -158,6 +178,7 @@ export default {
       });
     },
   },
+
 };
 </script>
 

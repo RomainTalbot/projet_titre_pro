@@ -25,7 +25,7 @@ const userService = {
   },
 
   // Méthode permettant de se connecter
-  login: async function (username, password) {
+  async login(username, password) {
 
     const response = await axios.post(storage.state.routes_back.baseUser + '/token', 
     {
@@ -39,6 +39,25 @@ const userService = {
 
     return response.data;
   },
+
+  // Méthode permettant de récupérer toutes informations de l'utilisateur
+  async loadUserDataByUsername(){
+
+    // Je récupère le username stockés dans le token du LocalStorage
+    const username = storage.state.services.token.get('userData').user_display_name;
+
+    const response = await axios.get(storage.state.routes_back.baseURI + '/users?slug=' + username);
+
+    return response.data;
+  },
+
+  // Méthode permettant de récupérer tous les skateparks postés par l'utilisateur
+  async loadUserSkateparks(id) {
+
+    const response = await axios.get(storage.state.routes_back.baseURI + '/skatepark?author=' + id);
+
+    return response.data;
+  }
 }
 
 export default userService

@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import SkateparkList from '../views/SkateparkList.vue'
 import SkateparkDetails from '../views/SkateparkDetails.vue'
 import SkateparkAdd from '../views/SkateparkAdd.vue'
+import SkateparkEdit from '../views/SkateparkEdit.vue'
 import ProductList from '../views/ProductList.vue'
 import NewsList from '../views/NewsList.vue'
 import Contact from '../views/Contact.vue'
@@ -29,9 +30,14 @@ const routes = [
     component: SkateparkDetails,
   },
   {
-    path: '/trouve-ton-skatepark/ajoute-ton-spot',
+    path: '/ajoute-ton-spot',
     name: 'skateparkAdd',
     component: SkateparkAdd,
+  },
+  {
+    path: '/modifie-ton-spot/:id',
+    name: 'skateparkEdit',
+    component: SkateparkEdit,
   },
   {
     path: '/trouve-ton-matos',

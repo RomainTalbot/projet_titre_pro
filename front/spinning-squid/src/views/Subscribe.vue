@@ -165,10 +165,10 @@ export default {
           this.password,
         );
 
-        console.log(result);
-        // if (result) {
-        //   this.$router.push("userHome");
-        // }
+        // console.log(result);
+        if (result) {
+          this.$router.push({name: 'userHome'});
+        }
       }
     },
 
@@ -191,7 +191,7 @@ export default {
           this.$store.state.services.token.set('userData', userData);
         }
       }
-      // this.$router.push('user-home');
+      this.$router.push({name: 'userHome'});
     }
   }
 }
