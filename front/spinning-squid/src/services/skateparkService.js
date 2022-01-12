@@ -20,6 +20,14 @@ const skateparkService = {
     return response.data;
   },
 
+  // Charge un skatepark et ses informations en focntion de son ID
+  async loadSkateParkByCity(city){
+
+    const response = await axios.get(storage.state.routes_back.baseURI + '/skatepark/?meta_key=city&meta_value=' + city + '?_embed=true');
+
+    return response.data;
+  },
+
   async addSpot(title, skatepark, pumptrack, streetspot, street, zipcode, city, latitude, longitude, parking, water, trashcan, lighting, table, benche, state, image){
    
     const userData = storage.state.services.token.get('userData');

@@ -13,7 +13,7 @@
     </button>
     
 
-    <form class="search-form">
+    <form class="search-form" @submit="handleSubmitSearchSkatepark">
       <label class="search-label">
         Où ça?
         <input
@@ -21,9 +21,9 @@
           class="search-input"
           type="text"
           name="town"
+          v-model="skateparkSearched"
           placeholder="Paris, Lyon ..."
           required
-          onChange="{props.searchFieldTown}"
         />
       </label>
       <button class="button search-button" type="submit">Rechercher</button>
@@ -64,6 +64,16 @@ export default {
   data() {
     return {
       skateparks: [],
+      skateparkSearched: "",
+    }
+  },
+
+  methods: {
+    handleSubmitSearchSkatepark: async function (event) {
+
+      event.preventDefault();
+
+      this.skateparks = await this.$store.state.services.skatepark.loadSkateParksByCity(this.skateparkSearched);
     }
   },
 };
