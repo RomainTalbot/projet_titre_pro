@@ -1,14 +1,27 @@
 <template>
-<div class="profile">
-    <h1 class="title profile-title" v-for="data in userData" :key="data.name">Bienvenue sur ton compte {{data.name}}</h1>
+  <div class="profile">
+    <h1 class="title profile-title" v-for="data in userData" :key="data.name">
+      Bienvenue sur ton compte {{ data.name }}
+    </h1>
 
     <div class="profile-container">
-      <img class="profile-avatar" v-if="getImageURL = 'false'" src='../assets/images/logo-noir.png' alt="1"/>
-      <img class="profile-avatar" v-else :src="getImageURL" alt="avatar"/>
+      <img
+        class="profile-avatar"
+        v-if="(getImageURL = 'false')"
+        src="../assets/images/logo-noir.png"
+        alt="1"
+      />
+      <img class="profile-avatar" v-else :src="getImageURL" alt="avatar" />
       <p class="profile-name"></p>
 
       <div class="profile-button-dock">
-        <button class="button" type="button">Editer mon profil</button>
+        <button class="button" type="button" @click="showModal">Editer mon profil</button>
+        <UserFormEdit 
+          v-show="isModalVisible" 
+          @close="closeModal"
+          :userDataProps="this.userData"
+        />
+          
         <button class="button" type="button">Supprimer compte</button>
       </div>
     </div>
@@ -18,71 +31,78 @@
 
       <h2 class="profile-add-title">Spot(s) ajouté(s)</h2>
       <div class="profile-contribution-articles">
-        <div class="profile-articles-title" v-if="userDataSkatepark == 0">Aucun skatepark</div>
-        <div v-else v-for="dataSkatepark in userDataSkatepark" :key="dataSkatepark.id">
-          <h3 class="profile-articles-title">{{dataSkatepark.title.rendered}}</h3>
-            <div class="profile-articles-button-dock">  
-              <button
-                class="button"
-                type="button"
+        <div class="profile-articles-title" v-if="userDataSkatepark == 0">
+          Aucun skatepark
+        </div>
+        <div
+          v-else
+          v-for="dataSkatepark in userDataSkatepark"
+          :key="dataSkatepark.id"
+        >
+          <h3 class="profile-articles-title">
+            {{ dataSkatepark.title.rendered }}
+          </h3>
+          <div class="profile-articles-button-dock">
+            <button class="button" type="button">
+              <router-link
+                :to="{
+                  name: 'skateparkDetails',
+                  params: {
+                    id: dataSkatepark.id,
+                  },
+                }"
               >
-                <router-link
-                  :to="{
-                    name: 'skateparkDetails',
-                    params: {
-                      id: dataSkatepark.id
-                    }
-                  }"
-                >
-                  Consulter
-                </router-link>
-              </button>
-          
-              <button
-                class="button"
-                type="button"
-                to=""
+                Consulter
+              </router-link>
+            </button>
+
+            <button class="button" type="button" to="">
+              <router-link
+                :to="{
+                  name: 'skateparkEdit',
+                  params: {
+                    id: dataSkatepark.id,
+                  },
+                }"
               >
-                <router-link
-                    :to="{
-                      name: 'skateparkEdit',
-                      params: {
-                        id: dataSkatepark.id
-                      }
-                    }"
-                  >
-                  Modifier
-                </router-link>
-              </button>
-            </div>
+                Modifier
+              </router-link>
+            </button>
+          </div>
         </div>
       </div>
 
       <h2 class="profile-add-title">Annonce(s) de matos</h2>
-      <div class="profile-contribution-articles">
-      </div>
+      <div class="profile-contribution-articles"></div>
 
       <h2 class="profile-add-title">Évènement ajouté(s)</h2>
-      <div class="profile-contribution-articles">
-      </div>
+      <div class="profile-contribution-articles"></div>
     </div>
-</div>
+  </div>
 </template>
 
 <script>
-
+import UserFormEdit from "../components/UserFormEdit.vue"
 export default {
   name: "UserHome",
 
+  components: {
+    UserFormEdit,
+  },
+
   async created() {
+    this.userData =
+      await this.$store.state.services.user.loadUserDataByUsername();
 
-    this.userData = await this.$store.state.services.user.loadUserDataByUsername();
+    this.userDataSkatepark =
+      await this.$store.state.services.user.loadUserSkateparks(
+        this.userData[0].id
+      );
 
-    this.userDataSkatepark = await this.$store.state.services.user.loadUserSkateparks(this.userData[0].id);
-
-    this.userAvatar = await this.$store.state.services.user.loadUserAvatarByMediaId(this.userData[0].meta.avatar);
-
-    console.log("coucou");
+    this.userAvatar =
+      await this.$store.state.services.user.loadUserAvatarByMediaId(
+        this.userData[0].meta.avatar
+      );
   },
 
   data() {
@@ -90,29 +110,34 @@ export default {
       userData: [],
       userDataSkatepark: [],
       userAvatar: "",
-      defaultAvatar: '../assets/images/logo-noir.png'
+      isModalVisible: false,
+    };
+  },
+  
+  methods: {
+    showModal() {
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.isModalVisible = false;
     }
   },
 
   computed: {
     getImageURL() {
-      if(this.userAvatar.media_details) {
-          if(this.userAvatar.media_details.sizes.medium) {
-              return this.userAvatar.media_details.sizes.medium.source_url;
-          }
-          else if(this.userAvatar.media_details.sizes.thumbnail) {
-              return this.userAvatar.media_details.sizes.thumbnail.source_url;
-          }
-          else {
-              return this.userAvatar.media_details.sizes.full.source_url;
-          }
-
+      if (this.userAvatar.media_details) {
+        if (this.userAvatar.media_details.sizes.medium) {
+          return this.userAvatar.media_details.sizes.medium.source_url;
+        } else if (this.userAvatar.media_details.sizes.thumbnail) {
+          return this.userAvatar.media_details.sizes.thumbnail.source_url;
+        } else {
+          return this.userAvatar.media_details.sizes.full.source_url;
+        }
+      } else {
+        return false;
       }
-      else {
-          return false
-      }
-  }
-  }
+    },
+  },
 };
 </script>
 
@@ -130,7 +155,7 @@ export default {
   .profile-container {
     width: 600px;
     height: auto;
-    margin: 0 auto 2em;
+    margin: 2em auto 2em;
     border: solid 1px $white;
     padding: 1em 0;
     display: flex;
@@ -235,7 +260,6 @@ export default {
         font-size: 1em;
       }
       .profile-contribution-articles {
-        
         display: flex;
         align-items: center;
         border: solid 1px;
@@ -309,48 +333,4 @@ export default {
     }
   }
 }
-
-.modal {
-  background-color: #ffffff;
-  width: 800px;
-  height: 450px;
-
-  .header {
-    width: 100%;
-    border-bottom: 1px solid gray;
-    font-size: 1.5em;
-    text-align: center;
-    padding: 5px;
-  }
-
-  .form {
-    padding: 2em;
-
-    .content {
-      width: 600px;
-      height: 300px;
-      margin: auto;
-
-      .form-edit-label {
-        float: left;
-        padding: 0.3em;
-        width: 100%;
-        margin: 0 auto;
-      }
-
-      .form-edit-input {
-        margin-left: 1em;
-        float: right;
-        width: 400px;
-      }
-    }
-    .actions {
-      padding: 10px 5px;
-      display: flex;
-      justify-content: space-evenly;
-      margin: 1em;
-    }
-  }
-}
-
 </style>

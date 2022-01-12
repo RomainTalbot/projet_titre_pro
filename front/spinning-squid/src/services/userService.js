@@ -24,6 +24,8 @@ const userService = {
     return result;
   },
 
+  // Méthode pour éditer son profil
+
   // Méthode permettant de se connecter
   async login(username, password) {
 
@@ -67,6 +69,10 @@ const userService = {
     }
   },
 
+  // Méthode pour se déconnecter
+
+  // Méthode pour supprimer son compte
+
   // Méthode permettant de récupérer toutes informations de l'utilisateur
   async loadUserDataByUsername(){
 
@@ -81,7 +87,7 @@ const userService = {
   async loadUserAvatarByMediaId(id) {
 
     const response = await axios.get(storage.state.routes_back.baseURI + '/media/' + id);
-    console.log(response);
+    
     return response.data;
   },
 
