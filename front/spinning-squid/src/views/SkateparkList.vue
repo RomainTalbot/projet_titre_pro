@@ -59,6 +59,8 @@ export default {
 
     this.skateparks = await this.$store.state.services.skatepark.loadSkateParks();
 
+    // console.log(this.skateparks);
+
   },
 
   data() {
@@ -72,8 +74,11 @@ export default {
     handleSubmitSearchSkatepark: async function (event) {
 
       event.preventDefault();
+      this.skateparks = [];
 
       this.skateparks = await this.$store.state.services.skatepark.loadSkateParksByCity(this.skateparkSearched);
+
+      // console.log(this.skateparks);
     }
   },
 };

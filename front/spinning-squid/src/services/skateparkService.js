@@ -21,9 +21,9 @@ const skateparkService = {
   },
 
   // Charge un skatepark et ses informations en focntion de son ID
-  async loadSkateParkByCity(city){
+  async loadSkateParksByCity(city){
 
-    const response = await axios.get(storage.state.routes_back.baseURI + '/skatepark/?meta_key=city&meta_value=' + city + '?_embed=true');
+    const response = await axios.get(storage.state.routes_back.baseURI + '/skatepark/?_embed=true&meta_key=city&meta_value=' + city);
 
     return response.data;
   },
