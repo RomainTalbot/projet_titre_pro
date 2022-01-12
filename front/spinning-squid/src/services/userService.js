@@ -40,6 +40,33 @@ const userService = {
     return response.data;
   },
 
+  // Méthode permettant de savoir si l'utilisateur est connecté
+  async isConnected () {
+
+    const userData = storage.state.services.token.get('userData');
+
+    if (userData != null) {
+
+      const token = userData.token;
+
+      if (token) {
+
+        const options = {
+          headers: {
+            Authorization: 'Bearer ' + token
+          }
+        };
+
+        const response = await axios.post(
+          storage.state.routes_back.baseUser + '/token/validate', 
+          null, 
+          options)
+
+        return response;
+      }
+    }
+  },
+
   // Méthode permettant de récupérer toutes informations de l'utilisateur
   async loadUserDataByUsername(){
 
@@ -48,6 +75,13 @@ const userService = {
 
     const response = await axios.get(storage.state.routes_back.baseURI + '/users?slug=' + username);
 
+    return response.data;
+  },
+
+  async loadUserAvatarByMediaId(id) {
+
+    const response = await axios.get(storage.state.routes_back.baseURI + '/media/' + id);
+    console.log(response);
     return response.data;
   },
 

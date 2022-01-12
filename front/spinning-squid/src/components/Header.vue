@@ -177,6 +177,12 @@ export default {
         document.querySelector(element).classList.toggle("active");
       });
     },
+
+    computed: {
+      user(){
+        return this.$store.state.user;
+      }
+    }
   },
 
 };

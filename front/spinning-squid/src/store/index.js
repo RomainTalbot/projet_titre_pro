@@ -26,7 +26,6 @@ export default new Vuex.Store({
     }
   },
 
-  // "setters" pour modifier le state du store
   mutations: {
   },
   actions: {

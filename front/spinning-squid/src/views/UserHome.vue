@@ -3,7 +3,8 @@
     <h1 class="title profile-title" v-for="data in userData" :key="data.name">Bienvenue sur ton compte {{data.name}}</h1>
 
     <div class="profile-container">
-      <img class="profile-avatar" src="" alt="avatar"/>
+      <img class="profile-avatar" v-if="getImageURL = 'false'" src='../assets/images/logo-noir.png' alt="1"/>
+      <img class="profile-avatar" v-else :src="getImageURL" alt="avatar"/>
       <p class="profile-name"></p>
 
       <div class="profile-button-dock">
@@ -79,15 +80,39 @@ export default {
 
     this.userDataSkatepark = await this.$store.state.services.user.loadUserSkateparks(this.userData[0].id);
 
-    console.log(this.userDataSkatepark);
+    this.userAvatar = await this.$store.state.services.user.loadUserAvatarByMediaId(this.userData[0].meta.avatar);
+
+    console.log("coucou");
   },
 
   data() {
     return {
       userData: [],
       userDataSkatepark: [],
+      userAvatar: "",
+      defaultAvatar: '../assets/images/logo-noir.png'
     }
   },
+
+  computed: {
+    getImageURL() {
+      if(this.userAvatar.media_details) {
+          if(this.userAvatar.media_details.sizes.medium) {
+              return this.userAvatar.media_details.sizes.medium.source_url;
+          }
+          else if(this.userAvatar.media_details.sizes.thumbnail) {
+              return this.userAvatar.media_details.sizes.thumbnail.source_url;
+          }
+          else {
+              return this.userAvatar.media_details.sizes.full.source_url;
+          }
+
+      }
+      else {
+          return false
+      }
+  }
+  }
 };
 </script>
 
