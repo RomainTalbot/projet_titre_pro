@@ -13,3 +13,5 @@ $spinningsquid= new Plugin;
 
 $api = new API;
 
+register_activation_hook(__FILE__, [$spinningsquid, 'activate']);
+register_deactivation_hook(__FILE__, [$spinningsquid, 'deactivate']);

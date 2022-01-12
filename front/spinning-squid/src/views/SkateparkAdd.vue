@@ -12,6 +12,7 @@
               type="text"
               v-model="title"
               placeholder="SkatePark de Grenoble Centre"
+              required
             />
           </div>
           <div class="spotadd-container-category">
@@ -23,6 +24,8 @@
                   class="spotadd-check-category cursor-pointer"
                   type="radio"
                   value="Skatepark"
+                  name="typeSpot"
+                  required
                   v-model="typeSpot"
                 />
               </label>
@@ -36,6 +39,7 @@
                   class="spotadd-check-category cursor-pointer"
                   type="radio"
                   value="Pumptrack"
+                  name="typeSpot"
                   v-model="typeSpot"
                 />
               </label>
@@ -49,6 +53,7 @@
                   class="spotadd-check-category cursor-pointer"
                   type="radio"
                   value="StreetSpot"
+                  name="typeSpot"
                   v-model="typeSpot"
                 />
               </label>
