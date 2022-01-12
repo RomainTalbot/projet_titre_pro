@@ -335,6 +335,7 @@ class API
         //image est envoyé par le front en base64
         $image = $request->get_param('image');
 
+        
         $user = wp_get_current_user();
 
         // Je vérie que l'user a le bon rôle (donc bien inscrit)
