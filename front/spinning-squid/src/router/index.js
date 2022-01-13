@@ -10,6 +10,7 @@ import NewsList from '../views/NewsList.vue'
 import Contact from '../views/Contact.vue'
 import Subscribe from '../views/Subscribe.vue'
 import UserHome from '../views/UserHome.vue'
+import NotFound from '../views/NotFound.vue'
 
 Vue.use(VueRouter)
 
@@ -63,6 +64,15 @@ const routes = [
     path: '/profil',
     name: 'userHome',
     component: UserHome,
+  },
+  {
+    path: '/404',
+    name: '404',
+    component: NotFound,
+  },
+  {
+    path: '*',
+    redirect: '/404',
   },
 
 ]
