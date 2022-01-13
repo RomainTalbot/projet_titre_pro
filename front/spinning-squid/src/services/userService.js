@@ -5,7 +5,7 @@ import storage from '../store/index';
 const userService = {
 
   // Créer un nouvel utilisateur
-  async saveNewUser(username, lastname, firstname, street, zipcode, city, email, password){
+  async saveNewUser(username, lastname, firstname, street, zipcode, city, email, password) {
 
     const result = await axios.post(
       storage.state.routes_back.baseSpinningSquid + '/newuser-save',
@@ -25,6 +25,24 @@ const userService = {
   },
 
   // Méthode pour éditer son profil
+  async updateUser (username, lastname, firstname, street, zipcode, city, email, password) {
+
+    const result = await axios.post(
+      storage.state.routes_back.baseSpinningSquid + '/user-edit',
+      {
+        username: username,
+        lastname: lastname,
+        firstname: firstname,
+        street: street,
+        zipcode: zipcode,
+        city: city,
+        email: email,
+        password: password
+      }
+    );
+
+    return result;
+  },
 
   // Méthode permettant de se connecter
   async login(username, password) {
@@ -70,8 +88,40 @@ const userService = {
   },
 
   // Méthode pour se déconnecter
+  logout () {
+
+    storage.state.services.token.unset('userData');
+  },
 
   // Méthode pour supprimer son compte
+  async deleteUser(id) {
+
+    const userData = storage.state.services.token.get('userData');
+
+    if (userData != null) {
+
+      const token = userData.token;
+
+      if (token) {
+
+        const options = {
+          headers: {
+            Authorization: 'Bearer ' + token
+          }
+        };
+
+        const response = await axios.post( 
+          storage.state.routes_back.baseSpinningSquid + '/user-delete',
+          { 
+            id: id,
+          }, 
+          options
+        );
+
+        return response;
+      }
+    }
+  },
 
   // Méthode permettant de récupérer toutes informations de l'utilisateur
   async loadUserDataByUsername(){

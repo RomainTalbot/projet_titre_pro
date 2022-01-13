@@ -19,10 +19,9 @@
         <UserFormEdit 
           v-show="isModalVisible" 
           @close="closeModal"
-          :userDataProps="this.userData"
         />
           
-        <button class="button" type="button">Supprimer compte</button>
+        <button class="button" type="button" @click="deleteUser">Supprimer compte</button>
       </div>
     </div>
 
@@ -120,6 +119,14 @@ export default {
     },
     closeModal() {
       this.isModalVisible = false;
+    },
+    deleteUser: async function() {
+
+      const userId = this.userData[0].id
+
+      const result = this.$store.state.services.user.deleteUser(userId);
+
+      console.log(result);
     }
   },
 

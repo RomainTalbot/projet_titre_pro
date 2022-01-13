@@ -83,9 +83,9 @@
               />
           </label>
           <div class="button-section">
-          <button type="button" class="button" @click="close">Annuler</button>
-          <button type="submit" class="button">Valider</button>
-        </div>
+            <button type="button" class="button" @click="close">Annuler</button>
+            <button type="submit" class="button">Valider</button>
+          </div>
         </form>
         </section>
       </div>
@@ -96,54 +96,6 @@
 <script>
 export default {
   name: "UserFormEdit",
-
-  methods: {
-    close() {
-      this.$emit("close");
-    },
-
-    handleSubmit: async function (event) {
-      event.preventDefault();
-
-     if (this.lastname == '') {
-       this.lastname = this.userDataProps[0].meta.lastname;
-     }
-     if (this.firstname == '') {
-       this.firstname = this.userDataProps[0].meta.firstname;
-     }
-     if (this.street == '') {
-       this.street = this.userDataProps[0].meta.street;
-     }
-     if (this.zipcode == '') {
-       this.zipcode = this.userDataProps[0].meta.zipcode;
-     }
-     if (this.city == '') {
-       this.city = this.userDataProps[0].meta.city;
-     }
-     if (this.email == '') {
-       this.email = this.userDataProps[0].meta.email;
-     }
-     if (this.password == '') {
-       this.password = this.userDataProps[0].meta.password;
-     }
-
-     const result = this.$store.state.services.user.saveNewUser(
-          this.username,
-          this.lastname,
-          this.firstname,
-          this.street,
-          this.zipcode,
-          this.city,
-          this.email,
-          this.password,
-        );
-      console.log(result);
-    }
-  },
-
-  props: {
-    userDataProps: Object,
-  },
 
   data() {
     return {
@@ -162,15 +114,64 @@ export default {
 
   async created() {
 
-    this.username = this.userDataProps[0].meta.username;
-    this.lastname = this.userDataProps[0].meta.lastname;
-    this.firstname = this.userDataProps[0].meta.firstname;
-    this.street = this.userDataProps[0].meta.street;
-    this.zipcode = this.userDataProps[0].meta.zipcode;
-    this.city = this.userDataProps[0].meta.city;
-    this.email = this.userDataProps[0].meta.email;
+    this.userData = await this.$store.state.services.user.loadUserDataByUsername(); 
 
-    console.log(this.lastname);
+    this.username = this.userData[0].meta.username;
+    this.lastname = this.userData[0].meta.lastname;
+    this.firstname = this.userData[0].meta.firstname;
+    this.street = this.userData[0].meta.street;
+    this.zipcode = this.userData[0].meta.zipcode;
+    this.city = this.userData[0].meta.city;
+    this.email = this.userData[0].meta.email;
+
+  },
+
+  methods: {
+
+    close() {
+      this.$emit("close");
+    },
+
+    handleSubmit: async function (event) {
+      event.preventDefault();
+
+      if (this.lastname == '') {
+        this.lastname = this.userData[0].meta.lastname;
+      }
+      if (this.firstname == '') {
+        this.firstname = this.userData[0].meta.firstname;
+      }
+      if (this.street == '') {
+        this.street = this.userData[0].meta.street;
+      }
+      if (this.zipcode == '') {
+        this.zipcode = this.userData[0].meta.zipcode;
+      }
+      if (this.city == '') {
+        this.city = this.userData[0].meta.city;
+      }
+      if (this.email == '') {
+        this.email = this.userData[0].meta.email;
+      }
+      if (this.password == '') {
+        this.password = this.userData[0].meta.password;
+     }
+
+      const result = this.$store.state.services.user.updateUser(
+          this.username,
+          this.lastname,
+          this.firstname,
+          this.street,
+          this.zipcode,
+          this.city,
+          this.email,
+          this.password,
+      );
+
+      if (result) {
+        console.log("gg à toi");
+      }
+    },
   },
 };
 </script>
