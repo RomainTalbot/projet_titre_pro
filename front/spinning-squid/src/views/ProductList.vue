@@ -2,12 +2,20 @@
   <div>
     <h1 class="title">Désolé mais je n'ai pas fini cette page</h1>
     <p class="subtitle">Repasse plus tard</p>
+
+    <button class="button" @click="verification">TEST</button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'ProductList'
+  name: 'ProductList',
+
+  methods: {
+    verification: async function() {
+      console.log(this.$store.state.services.user.isConnected());
+    }
+  }
 }
 </script>
 

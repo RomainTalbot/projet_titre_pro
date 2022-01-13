@@ -3,7 +3,7 @@
     <h1 class="title profile-title" v-for="data in userData" :key="data.name">
       Bienvenue sur ton compte {{ data.name }}
     </h1>
-
+    <button class="button logout-button" @click="logout">Déconnexion</button>
     <div class="profile-container">
       <img
         class="profile-avatar"
@@ -120,6 +120,11 @@ export default {
     closeModal() {
       this.isModalVisible = false;
     },
+    logout() {
+      this.$store.state.services.user.logout();
+
+      this.$router.push({name: 'home'});
+    },
     deleteUser: async function() {
 
       const userId = this.userData[0].id
@@ -157,6 +162,10 @@ export default {
 
   .profile-title {
     margin-bottom: 1em;
+  }
+
+  .logout-button {
+    font-size: 1.2em;
   }
 
   .profile-container {
@@ -294,6 +303,9 @@ export default {
   .profile {
     .profile-title {
       margin-bottom: 0.5em;
+    }
+    .logout-button {
+      margin-bottom: 2em;
     }
     .profile-container {
       width: 400px;

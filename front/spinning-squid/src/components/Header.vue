@@ -65,7 +65,6 @@
         </router-link>
 
         <router-link
-          v-if="!user"
           :to="{
             name: 'subscribe',
           }"
@@ -74,9 +73,8 @@
           Connexion
         </router-link>
         <router-link
-          v-if="user"
           :to="{
-            name: 'subscribe',
+            name: 'userHome',
           }"
           class="nav-link"
         >
@@ -141,7 +139,6 @@
             </router-link>
 
             <router-link
-              v-if="!user"
               :to="{
                 name: 'subscribe',
               }"
@@ -149,15 +146,16 @@
             >
               Connexion
             </router-link>
+
             <router-link
-              v-if="user"
               :to="{
-                name: 'subscribe',
+                name: 'userHome',
               }"
               class="nav-link menu-link"
             >
               Espace Utilisateur
             </router-link>
+
           </div>
         </nav>
       </div>
@@ -169,22 +167,21 @@
 export default {
   name: "Header",
 
+  data() {
+    return {
+    }
+  },
+
   methods: {
     toggle: function () {
+
       const targetElements = [".menu-opener", ".menu", ".menu-opener-inner"];
 
       targetElements.forEach((element) => {
         document.querySelector(element).classList.toggle("active");
       });
     },
-
-    computed: {
-      user(){
-        return this.$store.state.user;
-      }
-    }
   },
-
 };
 </script>
 
@@ -405,10 +402,11 @@ export default {
     }
   }
 }
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
   .nav {
     .nav-desktop{
       padding: 0 1em;
+      font-size: 0.8em;
     }
   }
 }

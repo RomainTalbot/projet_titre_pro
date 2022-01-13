@@ -20,6 +20,17 @@ export default {
     Header,
     Footer,
   },
+
+  async created() {
+
+    const isMyTokenValide = await this.$store.state.services.user.isConnected();
+
+    if (!isMyTokenValide) {
+      this.$store.state.user = false;
+    } else {
+      this.$store.state.user = true;
+    }
+  }
 };
 </script>
 

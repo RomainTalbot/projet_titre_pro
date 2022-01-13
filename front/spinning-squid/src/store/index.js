@@ -11,7 +11,7 @@ export default new Vuex.Store({
 
   // On stocke les données partageables avec les composants
   state: {
-    user: null,
+    user: false,
 
     services: {
       skatepark: skateparkService,

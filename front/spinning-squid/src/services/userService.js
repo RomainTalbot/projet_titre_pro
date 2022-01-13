@@ -57,6 +57,8 @@ const userService = {
       }
     );
 
+    storage.state.user = true;
+
     return response.data;
   },
 
@@ -82,8 +84,10 @@ const userService = {
           null, 
           options)
 
-        return response;
+        return response.data;
       }
+    } else {
+      return false;
     }
   },
 
@@ -91,6 +95,8 @@ const userService = {
   logout () {
 
     storage.state.services.token.unset('userData');
+
+    storage.state.user = false;
   },
 
   // Méthode pour supprimer son compte
@@ -134,6 +140,7 @@ const userService = {
     return response.data;
   },
 
+  // Méthode permettant de récupérer l'avatar de l'utilisataeur 
   async loadUserAvatarByMediaId(id) {
 
     const response = await axios.get(storage.state.routes_back.baseURI + '/media/' + id);
