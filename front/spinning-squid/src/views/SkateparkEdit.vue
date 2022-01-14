@@ -1,6 +1,16 @@
 <template>
   <div class="spotadd-container">
     <h2 class="title">Modifie ton Spot</h2>
+
+    <AlertMessage
+      v-if="alert"
+      :alertMessageProps="alertMessage"
+    />
+
+    <button class="button delete-button" type="button" @click="deleteSpot">
+      Supprime ton spot
+    </button>
+
     <form class="spotadd-form" @submit="handleSubmit">
       <div class="spotadd-form-container">
         <div class="spotadd-container-title-type">
@@ -246,7 +256,7 @@ export default {
   data() {
     return {
       skateparkID: null,
-      skatepark: null,
+      skateparkData: null,
 
       title: "",
       typeSpot: "",
@@ -263,6 +273,13 @@ export default {
       benche: "",
       state: "",
       image: "",
+
+      skatepark: "",
+      pumptrack: "",
+      streetspot: "",
+
+      alert: false,
+      alertMessage:  ""
     }
   },
 
@@ -270,29 +287,29 @@ export default {
 
     this.skateparkID = this.$route.params.id;
 
-    this.skatepark = await this.$store.state.services.skatepark.loadSkateParkById(this.skateparkID);
+    this.skateparkData = await this.$store.state.services.skatepark.loadSkateParkById(this.skateparkID);
 
     // Je charge les valeurs du Skatepark
-    this.title = this.skatepark.title.rendered;
-    if (this.skatepark.meta.skatepark) {
+    this.title = this.skateparkData.title.rendered;
+    if (this.skateparkData.meta.skatepark) {
       this.typeSpot = 'Skatepark'
-    } else if (this.skatepark.meta.pumptrack) {
+    } else if (this.skateparkData.meta.pumptrack) {
       this.typeSpot = 'Pumptrack'
     } else {
       this.typeSpot = 'Streetspot'
     }
-    this.street = this.skatepark.meta.street;
-    this.zipcode = this.skatepark.meta.zipcode;
-    this.city = this.skatepark.meta.city;
-    this.latitude = this.skatepark.meta.latitude;
-    this.longitude = this.skatepark.meta.longitude;
-    this.parking = this.skatepark.meta.parking;
-    this.water = this.skatepark.meta.water;
-    this.ligh = this.skatepark.meta.ligh;
-    this.lighting = this.skatepark.meta.lighting;
-    this.table = this.skatepark.meta.table;
-    this.benche = this.skatepark.meta.benche;
-    this.state = this.skatepark.meta.state
+    this.street = this.skateparkData.meta.street;
+    this.zipcode = this.skateparkData.meta.zipcode;
+    this.city = this.skateparkData.meta.city;
+    this.latitude = this.skateparkData.meta.latitude;
+    this.longitude = this.skateparkData.meta.longitude;
+    this.parking = this.skateparkData.meta.parking;
+    this.water = this.skateparkData.meta.water;
+    this.trashcan = this.skateparkData.meta.trashcan;
+    this.lighting = this.skateparkData.meta.lighting;
+    this.table = this.skateparkData.meta.table;
+    this.benche = this.skateparkData.meta.benche;
+    this.state = this.skateparkData.meta.state
   },
 
   methods: {
@@ -343,7 +360,8 @@ export default {
           this.bench = true;
         }
 
-        const result = this.$store.state.services.skatepark.addSpot(
+        const result = await this.$store.state.services.skatepark.editSpot(
+          this.skateparkID,
           this.title,
           this.skatepark,
           this.pumptrack,
@@ -363,13 +381,56 @@ export default {
           this.image
         );
 
-        console.log(result);
-        if (result) {
-          // this.$router.push({name: 'skateparkList'});
+        if (result.data.succes == true) {
+          this.alert = false;
+          window.alert('Ton spot a bien été modifié !');
+          this.$router.push({name: 'userHome'});
+        } else if (result.data.succes == true && result.data.image == 'unvalid image' ){
+          this.alert = false;
+          window.alert(
+            `
+            Ton spot a bien été modifié !
+            ATTENTION : ton image n'est pas au bon format ! (formats valides : jpg, jpeg, png)
+            Tu peux modifier ton post sur ton Espace Utilisateur
+            `
+          );
+          this.$router.push({name: 'skateparkList'});
+        } else if (result.data.succes == 'not allowed') {
+          this.alert = true;
+          this.alertMessage = "Tu n'es pas autorisé à modifier ce spot ! Vilain !";
         }
-      }
+        else if (result.data.succes == false) {
+          this.alert = true;
+          this.alertMessage = "Ton spot n'a pas été modifié. Vérifie tous les champs";
+        } else if (result.data.succes == false && result.data.informations == 'user is not connected') {
+          this.alert = true;
+          this.alertMessage = "Ton spot n'a pas éta modifié. Connecte toi d'abord";
+        }
+    } else {
+      this.alert = true;
+      this.alertMessage = "Ton spot n'a pas été ajouté. Vérifie tous les champs";
+    }
     },
-  },
+
+    deleteSpot: async function () {
+
+      const result = await this.$store.state.services.skatepark.deleteSpot(
+        this.skateparkID,
+      );
+
+      if (result.data.succes == 'not allowed') {
+        this.alert = true;
+        this.alertMessage = "Tu n'es pas autorisé à supprimer ce spot ! Vilain !";
+      } else if (result.data.succes == false && result.data.informations == 'user is not connected') {
+        this.alert = true;
+        this.alertMessage = "Ton spot n'a pas été ajouté. Connecte toi d'abord";
+      } else if (result.data.succes == true) {
+        this.alert = false;
+        window.alert('Ton spot a bien été supprimé')
+        this.$router.push({name: 'userHome'});
+      }
+    }
+  }
 };
 </script>
 
@@ -385,6 +446,15 @@ export default {
     font-size: 1.5em;
     text-align: center;
     color: $orange;
+  }
+
+  .delete-button {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 2em;
+    font-size: 1rem;
+    width: 120px;
+    height: 50px;
   }
 
   .spotadd-form {
@@ -466,6 +536,10 @@ export default {
     .spotadd-title {
       margin: 0.7em 0;
       font-size: 1.5em;
+    }
+    .delete-button {
+      justify-content: center;
+      margin: 0 auto;
     }
   }
 }

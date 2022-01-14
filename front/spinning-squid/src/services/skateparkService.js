@@ -72,6 +72,83 @@ const skateparkService = {
         return result;
       }
     }
+  },
+
+  async editSpot(id, title, skatepark, pumptrack, streetspot, street, zipcode, city, latitude, longitude, parking, water, trashcan, lighting, table, benche, state, image){
+   
+    const userData = storage.state.services.token.get('userData');
+
+    if (userData != null) {
+      const token = userData.token;
+
+      if(token){
+        const options = {
+          headers: {
+            Authorization:
+              'Bearer ' + token,
+          },
+        }
+
+        console.log(options);
+
+        const result = await axios.post(
+          storage.state.routes_back.baseSpinningSquid + '/skatepark-edit',
+          {
+            id: id,
+            title: title,
+            skatepark: skatepark,
+            pumptrack: pumptrack,
+            streetspot: streetspot,
+            street: street,
+            zipcode: zipcode,
+            city: city,
+            latitude: latitude,
+            longitude: longitude,
+            parking: parking,
+            water: water,
+            trashcan: trashcan,
+            lighting: lighting,
+            table: table,
+            benche: benche,
+            state: state,
+            image: image,
+          },
+          options
+        );
+
+        return result;
+      }
+    }
+  },
+
+  async deleteSpot(id) {
+
+    const userData = storage.state.services.token.get('userData');
+
+    if (userData != null) {
+      const token = userData.token;
+
+      if(token){
+        const options = {
+          headers: {
+            Authorization:
+              'Bearer ' + token,
+          },
+        }
+
+        console.log(options);
+
+        const result = await axios.post(
+          storage.state.routes_back.baseSpinningSquid + '/skatepark-delete',
+          {
+            id: id
+          },
+          options
+        );
+
+        return result;
+      }
+    }
   }
 }
 

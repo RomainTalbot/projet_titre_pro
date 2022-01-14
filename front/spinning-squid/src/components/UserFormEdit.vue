@@ -84,7 +84,7 @@
           </label>
           <div class="button-section">
             <button type="button" class="button" @click="close">Annuler</button>
-            <button type="submit" class="button">Valider</button>
+            <button type="submit" class="button" @click="close">Valider</button>
           </div>
         </form>
         </section>
@@ -153,9 +153,6 @@ export default {
       if (this.email == '') {
         this.email = this.userData[0].meta.email;
       }
-      if (this.password == '') {
-        this.password = this.userData[0].meta.password;
-     }
 
       const result = this.$store.state.services.user.updateUser(
           this.username,
@@ -169,7 +166,7 @@ export default {
       );
 
       if (result) {
-        console.log("gg à toi");
+        window.alert('Les modifications ont bien été apportées')
       }
     },
   },

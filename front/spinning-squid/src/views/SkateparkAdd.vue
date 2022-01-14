@@ -1,6 +1,12 @@
 <template>
   <div class="spotadd-container">
     <h2 class="title">Ajoute ton Spot</h2>
+
+    <AlertMessage
+      v-if="alert"
+      :alertMessageProps="alertMessage"
+    />
+
     <form class="spotadd-form" @submit="handleSubmit">
       <div class="spotadd-form-container">
         <div class="spotadd-container-title-type">
@@ -269,6 +275,9 @@ export default {
       skatepark: "",
       pumptrack: "",
       streetspot: "",
+
+      alert: false,
+      alertMessage:  ""
     };
   },
 
@@ -320,7 +329,7 @@ export default {
           this.bench = true;
         }
 
-        const result = this.$store.state.services.skatepark.addSpot(
+        const result = await this.$store.state.services.skatepark.addSpot(
           this.title,
           this.skatepark,
           this.pumptrack,
@@ -340,14 +349,37 @@ export default {
           this.image
         );
 
-        console.log(result);
-        if (result) {
-          // this.$router.push({name: 'skateparkList'});
-        }
+        // console.log(result);
+
+        if (result.data.succes == true) {
+          window.alert('Ton spot a bien été ajouté !');
+          this.$router.push({name: 'skateparkList'});
+        } else if (result.data.succes == true && result.data.image == 'unvalid image' ){
+            window.alert(
+              `
+              Ton spot a bien été ajouté !
+              ATTENTION : ton image n'est pas au bon format ! (formats valides : jpg, jpeg, png)
+              Tu peux modifier ton post sur ton Espace Utilisateur
+              `
+            );
+            this.$router.push({name: 'skateparkList'});
+        } else if (result.data.succes == false) {
+          this.alert = true;
+          this.alertMessage = "Ton spot n'a pas éta ajouté. Vérifie tous les champs";
+        } else if (result.data.succes == false && result.data.informations == 'user is not connected') {
+          this.alert = true;
+          this.alertMessage = "Ton spot n'a pas éta ajouté. Connecte toi d'abord";
+      } else {
+        this.alert = true;
+        this.alertMessage = 'Il faut au moins un titre et une adresse à ton spot !';
       }
-    },
-  },
-};
+    } else {
+      this.alert = true;
+      this.alertMessage = "Ton spot n'a pas éta ajouté. Vérifie tous les champs";
+    }
+    }
+  }
+}
 </script>
 
 <style lang="scss">

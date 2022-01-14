@@ -224,7 +224,11 @@ class API
         foreach ($userDataKey as $key => $value) {
             update_user_meta($userID, $key, $value);
         }
-        wp_set_password($password, $userID);
+        
+        // Condition obligatoire sinon le mdp = '' à l'édition -> plus possible de se connecter ensuite
+        if ($password != '') {
+            wp_set_password($password, $userID);
+        }
 
         // Je récupère la base64 et le type de l'image
         list($type, $data) = explode(';', $image);
@@ -233,7 +237,7 @@ class API
 
         // Si l'image a le bont type alors...
         if (!in_array($type, ['jpg', 'jpeg', 'png'])) {
-            echo "nop!";
+            echo "unvalid image";
         } else {
             echo "yes!";
             $dataDecoded = base64_decode($data);
@@ -373,59 +377,63 @@ class API
                 update_post_meta($skateparkCreateResult, 'state', $state);
 
                 // Je récupère la base64 et le type de l'image
-                list($type, $data) = explode(';', $image);
-                list(, $data)      = explode(',', $data);
-                list(, $type) = explode('/', $type);
+                if ($image != '') {
+                
+                    list($type, $data) = explode(';', $image);
+                    list(, $data)      = explode(',', $data);
+                    list(, $type) = explode('/', $type);
 
-                // Si l'image a le bont type alors...
-                if (!in_array($type, ['jpg', 'jpeg', 'png'])) {
-                    echo "nop!";
-                } else {
-                    echo "yes!";
-                    $dataDecoded = base64_decode($data);
-                    //$datajson = $dataDecoded;
+                    // Si l'image a le bont type alors...
+                    if (!in_array($type, ['jpg', 'jpeg', 'png'])) {
+                        $imageValidated = "unvalid image";
+                    } else {
+                        $imageValidated = 'yes';
+                        $dataDecoded = base64_decode($data);
+                        //$datajson = $dataDecoded;
+                    }
+
+                    // nom de mon image
+                    $userImageID = uniqid();
+                    $name = $userImageID . $type;
+                    // nom de mon image (sans l'extension)
+                    $filename = basename($name);
+                    // je demande à WP les chemins de téléchargement
+                    $upload_dir = wp_upload_dir();
+
+                    // si il n'existe pas, WP va me créer un dossier (ici uploads/2021/)
+                    if (wp_mkdir_p($upload_dir['path'])) {
+                        $file = $upload_dir['path'] . '/' . $filename;
+                    } else {
+                        $file = $upload_dir['basedir'] . '/' . $filename;
+                    }
+
+                    // Je reconstruit mon image
+                    file_put_contents($file, $dataDecoded);
+
+                    $attachment = array(
+                        //'guid'=> $upload_dir['url'] . '/' . basename($name),
+                        'post_mime_type' => "image/{$type}",
+                        'post_title' => $title,
+                        'post_content' => '',
+                        'post_status' => 'inherit'
+                    );
+
+                    $image_id = wp_insert_attachment($attachment, $file, $skateparkCreateResult);
+
+                    // Make sure that this file is included, as wp_generate_attachment_metadata() depends on it.
+                    require_once(ABSPATH . 'wp-admin/includes/image.php');
+                    // Generate the metadata for the attachment, and update the database record.
+                    $attach_data = wp_generate_attachment_metadata($image_id, $file);
+                    wp_update_attachment_metadata($image_id, $attach_data);
+
+                    // Ajout de l'image d'en-tête
+                    set_post_thumbnail($skateparkCreateResult, $image_id);      
                 }
-
-                // nom de mon image
-                $userImageID = uniqid();
-                $name = $userImageID . $type;
-                // nom de mon image (sans l'extension)
-                $filename = basename($name);
-                // je demande à WP les chemins de téléchargement
-                $upload_dir = wp_upload_dir();
-
-                // si il n'existe pas, WP va me créer un dossier (ici uploads/2021/)
-                if (wp_mkdir_p($upload_dir['path'])) {
-                    $file = $upload_dir['path'] . '/' . $filename;
-                } else {
-                    $file = $upload_dir['basedir'] . '/' . $filename;
-                }
-
-                // Je reconstruit mon image
-                file_put_contents($file, $dataDecoded);
-
-                $attachment = array(
-                    //'guid'=> $upload_dir['url'] . '/' . basename($name),
-                    'post_mime_type' => "image/{$type}",
-                    'post_title' => $title,
-                    'post_content' => '',
-                    'post_status' => 'inherit'
-                );
-
-                $image_id = wp_insert_attachment($attachment, $file, $skateparkCreateResult);
-
-                // Make sure that this file is included, as wp_generate_attachment_metadata() depends on it.
-                require_once(ABSPATH . 'wp-admin/includes/image.php');
-                // Generate the metadata for the attachment, and update the database record.
-                $attach_data = wp_generate_attachment_metadata($image_id, $file);
-                wp_update_attachment_metadata($image_id, $attach_data);
-
-                // Ajout de l'image d'en-tête
-                set_post_thumbnail($skateparkCreateResult, $image_id);
 
                 return [
                     'succes' => true,
                     'title' => $title,
+                    'image' => $imageValidated,
                     //'data' => $datajson
                 ];
             }
@@ -435,7 +443,6 @@ class API
             'succes' => false,
             'informations' => 'user is not connected',
             'user' => $user->ID,
-            'debug' =>  $title
         ];
     }
 
@@ -507,58 +514,60 @@ class API
                 update_post_meta($skateparkCreateResult, 'benche', $benche);
                 update_post_meta($skateparkCreateResult, 'state', $state);
 
-                // Je récupère la base64 et le type de l'image
-                list($type, $data) = explode(';', $image);
-                list(, $data)      = explode(',', $data);
-                list(, $type) = explode('/', $type);
+                if ($image != '') {
+                    // Je récupère la base64 et le type de l'image
+                    list($type, $data) = explode(';', $image);
+                    list(, $data)      = explode(',', $data);
+                    list(, $type) = explode('/', $type);
 
-                // Si l'image a le bont type alors...
-                if (!in_array($type, ['jpg', 'jpeg', 'png'])) {
-                    echo "nop!";
-                } else {
-                    echo "yes!";
-                    $dataDecoded = base64_decode($data);
-                    //$datajson = $dataDecoded;
+                    // Si l'image a le bont type alors...
+                    if (!in_array($type, ['jpg', 'jpeg', 'png'])) {
+                        $imageValidated = "unvalid image";
+                    } else {
+                        $imageValidated = "yes";
+                        $dataDecoded = base64_decode($data);
+                        //$datajson = $dataDecoded;
+                    }
+
+                    // nom de mon image
+                    $name = $title . '-' . uniqid() . $type;
+                    // nom de mon image (sans l'extension)
+                    $filename = basename($name);
+                    // je demande à WP les chemins de téléchargement
+                    $upload_dir = wp_upload_dir();
+
+                    // si il n'existe pas, WP va me créer un dossier (ici uploads/2021/)
+                    if (wp_mkdir_p($upload_dir['path'])) {
+                        $file = $upload_dir['path'] . '/' . $filename;
+                    } else {
+                        $file = $upload_dir['basedir'] . '/' . $filename;
+                    }
+
+                    // Je reconstruit mon image
+                    file_put_contents($file, $dataDecoded);
+
+                    $attachment = array(
+                        //'guid'=> $upload_dir['url'] . '/' . basename($name),
+                        'post_mime_type' => "image/{$type}",
+                        'post_title' => $title,
+                        'post_content' => '',
+                        'post_status' => 'inherit'
+                    );
+
+                    $image_id = wp_insert_attachment($attachment, $file, $skateparkCreateResult);
+
+                    // Make sure that this file is included, as wp_generate_attachment_metadata() depends on it.
+                    require_once(ABSPATH . 'wp-admin/includes/image.php');
+                    // Generate the metadata for the attachment, and update the database record.
+                    $attach_data = wp_generate_attachment_metadata($image_id, $file);
+                    wp_update_attachment_metadata($image_id, $attach_data);
+
+                    // Ajout de l'image d'en-tête
+                    set_post_thumbnail($skateparkCreateResult, $image_id);
                 }
-
-                // nom de mon image
-                $name = $title . '-' . uniqid() . $type;
-                // nom de mon image (sans l'extension)
-                $filename = basename($name);
-                // je demande à WP les chemins de téléchargement
-                $upload_dir = wp_upload_dir();
-
-                // si il n'existe pas, WP va me créer un dossier (ici uploads/2021/)
-                if (wp_mkdir_p($upload_dir['path'])) {
-                    $file = $upload_dir['path'] . '/' . $filename;
-                } else {
-                    $file = $upload_dir['basedir'] . '/' . $filename;
-                }
-
-                // Je reconstruit mon image
-                file_put_contents($file, $dataDecoded);
-
-                $attachment = array(
-                    //'guid'=> $upload_dir['url'] . '/' . basename($name),
-                    'post_mime_type' => "image/{$type}",
-                    'post_title' => $title,
-                    'post_content' => '',
-                    'post_status' => 'inherit'
-                );
-
-                $image_id = wp_insert_attachment($attachment, $file, $skateparkCreateResult);
-
-                // Make sure that this file is included, as wp_generate_attachment_metadata() depends on it.
-                require_once(ABSPATH . 'wp-admin/includes/image.php');
-                // Generate the metadata for the attachment, and update the database record.
-                $attach_data = wp_generate_attachment_metadata($image_id, $file);
-                wp_update_attachment_metadata($image_id, $attach_data);
-
-                // Ajout de l'image d'en-tête
-                set_post_thumbnail($skateparkCreateResult, $image_id);
-
                 return [
                     'succes' => true,
+                    'image' => $imageValidated,
                     //'data' => $datajson
                 ];
             }

@@ -129,9 +129,18 @@ export default {
 
       const userId = this.userData[0].id
 
-      const result = this.$store.state.services.user.deleteUser(userId);
+      const result = await this.$store.state.services.user.deleteUser(userId);
 
-      console.log(result);
+      if (result.data.succes == 'user deleted') {
+        window.alert('Ton compte a bien été supprimé');
+        this.logout();
+        this.$router.push({name: 'home'});
+      } else if (result.data.succes == 'not allowed') {
+        window.alert("Tu n'es pas autorisé à modifier ce spot ! Vilain !");
+        this.logout();
+      } else if (result.data.succes == false) {
+        window.alert("Ton compte n'a pas été supprimé");
+      }
     }
   },
 

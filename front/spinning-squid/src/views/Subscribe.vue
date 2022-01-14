@@ -2,6 +2,11 @@
       <div class="connection">
       <h1 class="title">Connecte toi ou sinon, inscrit toi.</h1>
 
+      <AlertMessage
+        v-if="alert"
+        :alertMessageProps="alertMessage"
+      />
+
       <div class="container-forms">
         <form class="form-register" @submit="handleSubmitSubscribe">
           <h2 class="form-title">
@@ -22,7 +27,7 @@
               type="text"
               class="form-input"
               v-model="lastname"
-              required
+              
             />
           </label>
           <label>Prénom
@@ -31,7 +36,7 @@
               type="text"
               class="form-input"
               v-model="firstname"
-              required
+              
             />
           </label>
           <label>Rue
@@ -40,7 +45,7 @@
               type="text"
               class="form-input"
               v-model="street"
-              required
+              
             />
           </label>
           <label>Code postal
@@ -49,7 +54,7 @@
               type="text"
               class="form-input"
               v-model="zipcode"
-              required
+              
             />
           </label>
           <label>Ville
@@ -58,7 +63,7 @@
               type="text"
               class="form-input"
               v-model="city"
-              required
+              
             />
           </label>
           <label>Email
@@ -94,7 +99,7 @@
               id="usernameConnexion"
               type="text"
               class="form-input"
-              v-model="username"
+              v-model="usernameLogin"
               required
             />
           </label>
@@ -103,7 +108,7 @@
               id="passwordConnexion"
               type="password"
               class="form-input"
-              v-model="password"
+              v-model="passwordLogin"
               required
             />
           </label>
@@ -116,8 +121,13 @@
 </template>
 
 <script>
+import AlertMessage from '../components/AlertMessage.vue';
+
 export default {
   name:"Subscribe",
+  components: {
+    AlertMessage,
+  },
 
   data() {
     return {
@@ -129,9 +139,12 @@ export default {
       city: "",
       email: "",
       password: "",
-      usernameEmpty: true,
-      emailEmpty: true,
-      paswordEmpty: true
+
+      usernameLogin: "",
+      passwordLogin: "",
+
+      alert: false,
+      alertMessage:  ""
     }
   },
 
@@ -139,22 +152,12 @@ export default {
     handleSubmitSubscribe: async function (event) {
       event.preventDefault();
 
-      if (this.username != "") {
-        this.usernameEmpty = false;
-      }
-      if (this.email != "") {
-        this.emailEmpty = false;
-      }
-      if (this.password != "") {
-        this.passwordEmpty = false;
-      }
-
       if (
         this.username != "" &&
         this.email != "" &&
         this.password != ""
       ) {
-        const result = this.$store.state.services.user.saveNewUser(
+        const result = await this.$store.state.services.user.saveNewUser(
           this.username,
           this.lastname,
           this.firstname,
@@ -164,34 +167,56 @@ export default {
           this.email,
           this.password,
         );
-
-        // console.log(result);
-        if (result) {
-          this.$router.push({name: 'userHome'});
+        
+        if (result.data.succes == 'this username already exist') {
+          this.alert = true;
+          this.alertMessage = "Ce nom d'utilisateur existe déjà";
+        } else if (result.data.succes == 'this email is already used') {
+          this.alert = true;
+          this.alertMessage = "Cet email est déjà pris";
+        } else if (result.data.succes == false) {
+          this.alert = true;
+          this.alertMessage = "L'inscription a échoué : vérifie que tu as bien rempli tous les champs";
+        } else if (result.data.succes === true) {
+          this.alert = true;
+          this.alertMessage = "Inscription réussite : connecte toi maintenant";
+          this.username='';
+          this.lastname='';
+          this.firstname='';
+          this.street='';
+          this.zipcode='';
+          this.city='';
+          this.email='';
+          this.password='';
         }
+      } else {
+        this.alert = true;
+        this.alertMessage = "L'inscription a échoué : vérifie que tu as bien rempli tous les champs";
       }
+
+      console.log(this.AlertMessage)
     },
 
     handleSubmitLogin: async function(event) {
       event.preventDefault();
 
-      if (this.username != "") {
-        this.usernameEmpty = false;
-      }
-      if (this.password != "") {
-        this.passwordEmpty = false;
-      }
-
-      if (!this.usernameEmpty && !this.passwordEmpty) {
+      if (
+        this.usernameLogin != "" &&
+        this.passwordLogin != ""
+      ) {
         
-        let userData = await this.$store.state.services.user.login(this.username, this.password);
-        // console.log(userData);
+        let userData = await this.$store.state.services.user.login(this.usernameLogin, this.passwordLogin);
+
+        if (!userData) {
+          this.alert = true;
+          this.alertMessage = "Nom d'utilisateur ou mot de passe incorrect";
+        }
 
         if (userData.token) {
           this.$store.state.services.token.set('userData', userData);
+          this.$router.push({name: 'userHome'});
         }
       }
-      this.$router.push({name: 'userHome'});
     }
   }
 }
