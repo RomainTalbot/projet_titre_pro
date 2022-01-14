@@ -122,8 +122,8 @@
                 accept="image/png, image/jpeg, image/jpg"
                 multiple
                 hidden
+                @change='convertImage'
               />
-              <span id="file-chosen">No file chosen</span>
             </div>
           </div>
           <div class="spotadd-container-equipment-state">
@@ -360,6 +360,10 @@ export default {
           this.bench = true;
         }
 
+        if (this.$store.state.image != '') {
+          this.image = this.$store.state.image;
+        }
+
         const result = await this.$store.state.services.skatepark.editSpot(
           this.skateparkID,
           this.title,
@@ -409,6 +413,7 @@ export default {
     } else {
       this.alert = true;
       this.alertMessage = "Ton spot n'a pas été ajouté. Vérifie tous les champs";
+      console.log(this.alertMessage);
     }
     },
 
@@ -429,6 +434,12 @@ export default {
         window.alert('Ton spot a bien été supprimé')
         this.$router.push({name: 'userHome'});
       }
+    },
+
+    convertImage: function() {
+
+      const image = document.querySelector('#uploadImage')['files'][0];
+      this.$store.state.services.image.convertBase64(image);
     }
   }
 };

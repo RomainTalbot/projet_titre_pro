@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 import skateparkService from "../services/skateparkService.js";
 import userService from "../services/userService.js";
 import tokenService from "../services/tokenService.js";
+import imageService from "../services/imageService.js";
 
 Vue.use(Vuex)
 
@@ -12,11 +13,13 @@ export default new Vuex.Store({
   // On stocke les données partageables avec les composants
   state: {
     user: false,
-
+    image: '',
+    
     services: {
       skatepark: skateparkService,
       user: userService,
       token: tokenService,
+      image: imageService
     },
 
     routes_back: {

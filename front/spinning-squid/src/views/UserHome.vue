@@ -9,7 +9,7 @@
         class="profile-avatar"
         v-if="getImageURL == false"
         src="../assets/images/logo-noir.png"
-        alt="1"
+        alt=""
       />
       <img class="profile-avatar" v-else :src="getImageURL" alt="avatar" />
       <p class="profile-name"></p>

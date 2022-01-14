@@ -3,7 +3,16 @@
     <h1 class="title">Désolé mais je n'ai pas fini cette page</h1>
     <p class="subtitle">Repasse plus tard</p>
 
-    <button class="button" @click="verification">TEST</button>
+    <input
+      id="uploadImage"
+      class="add-image"
+      type="file"
+      name="image"
+      accept="image/png, image/jpeg, image/jpg"
+      multiple
+      hidden
+      @change="verification"
+    />
   </div>
 </template>
 
@@ -11,12 +20,19 @@
 export default {
   name: 'ProductList',
 
-  methods: {
-    verification: async function() {
-      console.log(this.$store.state.services.user.isConnected());
+  data() {
+    return {
+      image: ""
     }
+  },
+  methods: {
+    verification: function(event) {
+      console.log(event.target.files);
+      console.log(document.querySelector('.add-image')['files'][0]);
+      const test1 = document.querySelector('.add-image')['files'][0]
+      console.log(this.$store.state.services.image.convertBase64(test1));
   }
-}
+}}
 </script>
 
 <style lang="scss">

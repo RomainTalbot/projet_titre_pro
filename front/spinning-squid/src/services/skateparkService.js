@@ -43,7 +43,7 @@ const skateparkService = {
           },
         }
 
-        console.log(options);
+        // console.log(options);
 
         const result = await axios.post(
           storage.state.routes_back.baseSpinningSquid + '/newskatepark-save',
@@ -68,7 +68,7 @@ const skateparkService = {
           },
           options
         );
-
+        
         return result;
       }
     }
@@ -89,7 +89,7 @@ const skateparkService = {
           },
         }
 
-        console.log(options);
+        // console.log(options);
 
         const result = await axios.post(
           storage.state.routes_back.baseSpinningSquid + '/skatepark-edit',
@@ -115,7 +115,7 @@ const skateparkService = {
           },
           options
         );
-
+        console.log(result);
         return result;
       }
     }
@@ -136,7 +136,7 @@ const skateparkService = {
           },
         }
 
-        console.log(options);
+        // console.log(options);
 
         const result = await axios.post(
           storage.state.routes_back.baseSpinningSquid + '/skatepark-delete',

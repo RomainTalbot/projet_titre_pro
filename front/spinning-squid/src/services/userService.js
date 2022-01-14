@@ -25,7 +25,7 @@ const userService = {
   },
 
   // Méthode pour éditer son profil
-  async updateUser (username, lastname, firstname, street, zipcode, city, email, password) {
+  async updateUser (username, lastname, firstname, street, zipcode, city, email, password, image) {
 
     const result = await axios.post(
       storage.state.routes_back.baseSpinningSquid + '/user-edit',
@@ -37,7 +37,8 @@ const userService = {
         zipcode: zipcode,
         city: city,
         email: email,
-        password: password
+        password: password,
+        image: image
       }
     );
 

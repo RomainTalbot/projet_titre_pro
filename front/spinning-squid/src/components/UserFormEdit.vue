@@ -80,6 +80,7 @@
             accept="image/png, image/jpeg, image/jpg"
             multiple
             hidden
+            @change='convertImage'
               />
           </label>
           <div class="button-section">
@@ -154,6 +155,10 @@ export default {
         this.email = this.userData[0].meta.email;
       }
 
+      if (this.$store.state.image != '') {
+          this.image = this.$store.state.image;
+      }
+
       const result = this.$store.state.services.user.updateUser(
           this.username,
           this.lastname,
@@ -163,12 +168,19 @@ export default {
           this.city,
           this.email,
           this.password,
+          this.image
       );
 
       if (result) {
         window.alert('Les modifications ont bien été apportées')
       }
     },
+
+    convertImage: function() {
+
+      const image = document.querySelector('.add-image')['files'][0];
+      this.$store.state.services.image.convertBase64(image);
+    }
   },
 };
 </script>
