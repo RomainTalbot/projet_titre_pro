@@ -5,6 +5,7 @@ import skateparkService from "../services/skateparkService.js";
 import userService from "../services/userService.js";
 import tokenService from "../services/tokenService.js";
 import imageService from "../services/imageService.js";
+import contactService from "../services/contactService.js";
 
 Vue.use(Vuex)
 
@@ -19,7 +20,8 @@ export default new Vuex.Store({
       skatepark: skateparkService,
       user: userService,
       token: tokenService,
-      image: imageService
+      image: imageService,
+      contact: contactService
     },
 
     routes_back: {
