@@ -1,6 +1,16 @@
 <template>
   <div class="search-list-item">
-  <img class="search-list-image" :src="getImageURL" alt="" />
+  <img 
+    class="search-list-image" 
+    v-if="getImageURL == false"
+    src="../assets/images/logo1.png" 
+    alt="test" 
+  />
+  <img 
+    class="search-list-image" 
+    v-else :src="getImageURL"
+    alt="" 
+  />
   <div class="block-titre-type">
     <div>
       <h2 class="search-list-title">{{ skateparkProps.title.rendered }}</h2>
@@ -68,7 +78,7 @@ export default {
 
       }
       else {
-          return '../assets/images/logo-noir.png';
+          return false;
       }
   }
   }

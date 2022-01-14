@@ -7,7 +7,7 @@
     <div class="profile-container">
       <img
         class="profile-avatar"
-        v-if="(getImageURL = 'false')"
+        v-if="getImageURL == false"
         src="../assets/images/logo-noir.png"
         alt="1"
       />
