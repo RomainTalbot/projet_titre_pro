@@ -7,21 +7,8 @@
 
 <script>
 export default {
-  name: 'ProductList',
-
-  data() {
-    return {
-      image: ""
-    }
-  },
-  methods: {
-    verification: function(event) {
-      console.log(event.target.files);
-      console.log(document.querySelector('.add-image')['files'][0]);
-      const test1 = document.querySelector('.add-image')['files'][0]
-      console.log(this.$store.state.services.image.convertBase64(test1));
-  }
-}}
+  name: 'Newsletter'
+}
 </script>
 
 <style lang="scss">

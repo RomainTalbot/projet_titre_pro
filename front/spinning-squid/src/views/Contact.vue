@@ -60,6 +60,10 @@ export default {
         if (result) {
           this.alert = true;
           this.alertMessage = 'Ton message a bien été envoyé';
+          this.subject= '';
+          this.email= '';
+          this.message= '';
+          
         }
       } else {
         this.alert = true;

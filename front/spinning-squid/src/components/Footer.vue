@@ -11,7 +11,7 @@
 
         <router-link
           :to="{
-            name: 'home',
+            name: 'newsletter',
           }"
           class="nav-footer-link"
         >
@@ -20,7 +20,7 @@
 
         <router-link
           :to="{
-            name: 'home',
+            name: 'spinningSquad',
           }"
           class="nav-footer-link"
         >

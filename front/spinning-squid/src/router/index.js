@@ -11,6 +11,8 @@ import NewsList from '../views/NewsList.vue'
 import Contact from '../views/Contact.vue'
 import Subscribe from '../views/Subscribe.vue'
 import UserHome from '../views/UserHome.vue'
+import Newsletter from '../views/Newsletter.vue'
+import SpinningSquad from '../views/SpinningSquad.vue'
 import NotFound from '../views/NotFound.vue'
 
 Vue.use(VueRouter);
@@ -78,6 +80,16 @@ const routes = [
     name: 'userHome',
     component: UserHome,
     beforeEnter: guardMyroute,
+  },
+  {
+    path: '/newsletter',
+    name: 'newsletter',
+    component: Newsletter,
+  },
+  {
+    path: '/spinning_squad',
+    name: 'spinningSquad',
+    component: SpinningSquad,
   },
   {
     path: '/404',
