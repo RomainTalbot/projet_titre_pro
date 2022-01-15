@@ -95,21 +95,21 @@
                 required
               />
               <input
-                id="addSpotlongitude"
-                class="spotadd-input"
-                type="number"
-                step="0.00001"
-                v-model="longitude"
-                placeholder="longitude"
-                required
-              />
-              <input
                 id="addSpotlatitude"
                 class="spotadd-input"
                 type="number"
                 step="0.00001"
                 v-model="latitude"
                 placeholder="latitude"
+                required
+              />
+              <input
+                id="addSpotlongitude"
+                class="spotadd-input"
+                type="number"
+                step="0.00001"
+                v-model="longitude"
+                placeholder="longitude"
                 required
               />
             </div>
