@@ -3,91 +3,91 @@
     <div class="modal-backdrop">
       <div class="modal">
         <section class="modal-body">
-                 <form class="form-register" @submit="handleSubmit">
-          <h2 class="form-title">
-            Modifie les infos de ton compte
-          </h2>
-          <label>Nom
-            <input
-              id="lastname"
-              type="text"
-              class="form-input"
-              v-model="lastname"
-              required
-            />
-          </label>
-          <label>Prénom
-            <input
-              id="firstname"
-              type="text"
-              class="form-input"
-              v-model="firstname"
-              required
-            />
-          </label>
-          <label>Rue
-            <input
-              id="street"
-              type="text"
-              class="form-input"
-              v-model="street"
-              required
-            />
-          </label>
-          <label>Code postal
-            <input
-              id="postal"
-              type="text"
-              class="form-input"
-              v-model="zipcode"
-              required
-            />
-          </label>
-          <label>Ville
-            <input
-              id="city"
-              type="text"
-              class="form-input"
-              v-model="city"
-              required
-            />
-          </label>
-          <label>Email
-            <input
-              id="email"
-              type="email"
-              class="form-input"
-              v-model="email"
-              required
-
-            />
-          </label>
-          <label>Password
-            <input
-              id="passwordInscription"
-              type="password"
-              class="form-input"
-              v-model="password"
-              
-            />
-          </label>
-          <label id="avatar-title">Avatar
-          <input
-            id="uploadImage"
-            class="add-image"
-            type="file"
-            name="image"
-            accept="image/png, image/jpeg, image/jpg"
-            multiple
-            hidden
-            @change='convertImage'
+          <form class="form-register" @submit="handleSubmit">
+            <h2 class="form-title">
+              Modifie les infos de ton compte
+            </h2>
+            <label>Nom
+              <input
+                id="lastname"
+                type="text"
+                class="form-input"
+                v-model="lastname"
+                required
               />
-          </label>
-          <div class="button-section">
-            <button type="button" class="button" @click="close">Annuler</button>
-            <button type="submit" class="button" @click="close">Valider</button>
-          </div>
-        </form>
+            </label>
+            <label>Prénom
+              <input
+                id="firstname"
+                type="text"
+                class="form-input"
+                v-model="firstname"
+                required
+              />
+            </label>
+            <label>Rue
+              <input
+                id="street"
+                type="text"
+                class="form-input"
+                v-model="street"
+                required
+              />
+            </label>
+            <label>Code postal
+              <input
+                id="postal"
+                type="text"
+                class="form-input"
+                v-model="zipcode"
+                required
+              />
+            </label>
+            <label>Ville
+              <input
+                id="city"
+                type="text"
+                class="form-input"
+                v-model="city"
+                required
+              />
+            </label>
+            <label>Email
+              <input
+                id="email"
+                type="email"
+                class="form-input"
+                v-model="email"
+                required
+
+              />
+            </label>
+            <label>Password
+              <input
+                id="passwordInscription"
+                type="password"
+                class="form-input"
+                v-model="password"
+                
+              />
+            </label>
+            <label id="avatar-title">Avatar
+            <input
+              id="uploadImage"
+              class="add-image"
+              type="file"
+              name="image"
+              accept="image/png, image/jpeg, image/jpg"
+              multiple
+              hidden
+              @change='convertImage'
+                />
+            </label>
+            <div class="button-section">
+              <button type="button" class="button" @click="close">Annuler</button>
+              <button type="submit" class="button" @click="close">Valider</button>
+            </div>
+          </form>
         </section>
       </div>
     </div>

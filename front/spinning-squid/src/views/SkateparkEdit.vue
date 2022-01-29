@@ -250,8 +250,13 @@
 </template>
 
 <script>
+import AlertMessage from '../components/AlertMessage.vue';
+
 export default {
   name: "SkateparkForm",
+   components: {
+    AlertMessage,
+  },
 
   data() {
     return {

@@ -2,8 +2,6 @@
 
 namespace SpinningSquid;
 
-use SpinningSquid\Models\NewsLetterCustomerModel;
-
 class Plugin
 {
     public function __construct()
