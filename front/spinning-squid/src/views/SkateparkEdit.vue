@@ -253,7 +253,7 @@
 import AlertMessage from '../components/AlertMessage.vue';
 
 export default {
-  name: "SkateparkForm",
+  name: "SkateparkEdit",
    components: {
     AlertMessage,
   },
