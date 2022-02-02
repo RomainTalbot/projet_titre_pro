@@ -446,7 +446,7 @@ class Plugin
     }
 
     // Méthode créant la metabox pour les Articles
-      public function info_article($post){
+    public function info_article($post){
 
         $date      = get_post_meta($post->ID,'date',true);
         $place   = get_post_meta($post->ID,'place',true);
